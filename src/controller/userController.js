@@ -43,4 +43,13 @@
         }); 
     }
     }
+
+       /*
+     @Params : req and res
+     @Response : user data and status
+     */
     
+    exports.getUsers = (async (req, res) => {
+        const users = await service.getUser()
+        return res.status(200).json({ status: 200, data: users, message: "All Users Data" });
+    });
