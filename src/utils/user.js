@@ -1,5 +1,10 @@
 const Joi = require('joi');
 
+/*
+ @params : user
+ @Description: Created User function for use joi validation pass user parameters. this function return userSchema
+
+*/
 const User = (user)=>{
  userSchema = Joi.object({
     name: Joi.string()
