@@ -1,8 +1,12 @@
     const service = require("../services/user")
     const md5 = require('md5');
-
-    exports.userRegister = async(req,res)=>{
-        
+   
+    /*
+     @Params : req and res
+     @Request : req.body
+     @Response : request status in json format with status code
+     @Description : userRegister function request data from user. addUser function require from service file and called in this function and pass req.body data as arguments , In response user status return */
+    exports.userRegister = async(req,res)=>{ 
         const data = await service.addUser({
             name: req.body.name,
             email: req.body.email,
@@ -23,5 +27,6 @@
             data: data,
             msg: "User created successfully"
         });
+       
     }
     
