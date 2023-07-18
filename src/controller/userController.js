@@ -5,7 +5,10 @@
      @Params : req and res
      @Request : req.body
      @Response : request status in json format with status code
-     @Description : userRegister function request data from user. addUser function require from service file and called in this function and pass req.body data as arguments , In response user status return */
+     @Description : userRegister function request data from user.
+     checkEmail function check email already exist or not.
+     if user data not exist(user == null) user created else send response user already registered.  
+     addUser function require from service file and called in this function and pass userData (req.body) data as arguments , In response user status return */
     exports.userRegister = async(req,res)=>{ 
             const user = await service.checkEmail(req.body.email);    
             if(user == null){
