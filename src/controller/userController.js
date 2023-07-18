@@ -51,5 +51,8 @@
     
     exports.getUsers = (async (req, res) => {
         const users = await service.getUser()
+        if(users.length == 0){
+            return res.status(200).json({ status: 200, data: users, message: "No data found" });
+        }
         return res.status(200).json({ status: 200, data: users, message: "All Users Data" });
     });
