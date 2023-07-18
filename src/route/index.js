@@ -7,4 +7,7 @@ const userRoute = require('./user')
 
 
 router.post('/', userMiddleware, userRoute.userRegisterRoute)
+
+router.get('/users',userRoute.allUsersRoute)
+
 module.exports = router
