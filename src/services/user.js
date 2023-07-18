@@ -19,6 +19,24 @@ exports.addUser = async(userData)=>{
   }
 }
 
+/****************************************************************************** 
+
+@Description : created getUser function for get all user that stored in database. this function return user data.
+
+*******************************************************************************/
+
+exports.getUser = async()=>{
+  try{
+    await sequelize.sync();
+    const user = await User.findAll({})
+    console.log(user)
+    return user
+  }
+  catch(e){
+    console.log(e);
+  }
+}
+
 
 /****************************************************************************** 
 @params : email
