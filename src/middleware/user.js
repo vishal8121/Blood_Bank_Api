@@ -10,7 +10,7 @@ if error any error return then response error status message with mentioned erro
 */
 exports.data =(req,res,next)=>{
     user = req.body
-    response = userMiddleware(user);
+    response = userMiddleware.User(user);
     if(response.error){
         res.status(400).send({
         Status: '400',
@@ -25,7 +25,7 @@ exports.data =(req,res,next)=>{
 
  exports.updateData = (req,res,next)=>{
     user = req.body
-    response = userMiddleware(user);
+    response = userMiddleware.updatedUser(user);
     if(response.error){
         res.status(400).send({
         Status: '400',
