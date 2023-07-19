@@ -58,7 +58,6 @@ const User = sequelize.define('User', {
    },
    updated_by:{
     type: DataTypes.STRING,
-    allowNull: true
    }
 },  {
   tableName: 'users'

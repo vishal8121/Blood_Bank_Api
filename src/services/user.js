@@ -56,3 +56,20 @@ exports.checkEmail = async (email) => {
       throw Error('Error:'+e)
   }
 };
+
+
+
+exports.updateUser = async (id,data) =>{
+ try{
+   const user = await User.update(data,{
+    where:{
+      id : id
+    }
+   });
+   return user;
+ }
+ catch(e){
+  throw Error('Error :'+e);
+ }
+
+}

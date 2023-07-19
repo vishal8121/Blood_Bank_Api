@@ -6,8 +6,10 @@ const userRoute = require('./user')
 
 
 
-router.post('/', userMiddleware, userRoute.userRegisterRoute)
+router.post('/', userMiddleware.data, userRoute.userRegisterRoute)
 
 router.get('/users',userRoute.allUsersRoute)
+
+router.put('/updateUser/:id',userMiddleware.updateData,userRoute.updateUserRoute)
 
 module.exports = router

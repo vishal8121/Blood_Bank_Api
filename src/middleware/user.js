@@ -8,7 +8,7 @@ const userMiddleware = require('../utils/user')
 require userMiddleware from utils and pass user(req.body) as argument in userMiddleware function. 
 if error any error return then response error status message with mentioned error and if no error occur then next() return
 */
-const data =(req,res,next)=>{
+exports.data =(req,res,next)=>{
     user = req.body
     response = userMiddleware(user);
     if(response.error){
@@ -22,6 +22,20 @@ const data =(req,res,next)=>{
         next()
     }
 }
-module.exports = data;
+
+ exports.updateData = (req,res,next)=>{
+    user = req.body
+    response = userMiddleware(user);
+    if(response.error){
+        res.status(400).send({
+        Status: '400',
+        msg: 'User not updated',
+        error: response.error.details[0].message
+        })
+    }
+    else{
+        next()
+    }
+}
 
  
