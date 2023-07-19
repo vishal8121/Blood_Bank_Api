@@ -1,6 +1,6 @@
-const service = require("../services/user")
+const service = require("../services/user");
 const bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 /*
  @Params : req and res
  @Request : req.body
@@ -68,13 +68,29 @@ exports.getUsers = (async (req, res) => {
 */
 
 exports.updateUser = async (req, res) => {
-    id = req.params.id;
-    data = req.body;
-    const user = await service.updateUser(id, data);
-    return res.status(201).json({
-        status: 201,
-        data: user,
-        message: "User updated successfully"
+    const id = req.params.id;
+    const data = req.body;
+    const token = req.headers['token'];
+    if(!token){
+        console.log(token)
+      return  res.status(401).json({ 
+            status: "401",
+            message: 'User are not authenticated.'
+             });
+    }
+    jwt.verify(token, process.env.SECRET_KEY, async function(err){
+        if(err){
+            return res.status(500).json({
+            status: "500",
+            message: 'Failed to authenticate token'
+            })   
+        }
+        const user = await service.updateUser(id, data);
+            return res.status(201).json({
+                status: 201,
+                data: user,
+                message: "User updated successfully"
+            })
     })
 }
 
