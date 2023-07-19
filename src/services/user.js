@@ -97,3 +97,28 @@ exports.deleteUser = async (id) =>{
   }
  
  }
+
+
+ exports.loginUser = async(email)=>{
+   try{
+      const oldUser = await User.findOne({
+        where:{
+          email : email
+        }
+      });
+      if(oldUser != null){
+        await User.update({
+          status : 'active'},
+          {where : {email : email}},
+          );
+        return oldUser;
+      }
+      else{
+        console.log('User not exist')
+      }  
+  }
+   catch(e){
+    console.log("error"+e);
+   }
+
+ }
