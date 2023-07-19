@@ -78,10 +78,28 @@ const updatedUser = (user)=>{
          return jwt.sign({userData},  process.env.SECRET_KEY, {expiresIn:"600s"});
        }
 
+       const verifyToken= (token) =>{
+       if(!token){
+           console.log(token)
+         return  res.status(401).json({ 
+               status: "401",
+               message: 'User are not authenticated.'
+                });
+       }
+       jwt.verify(token, process.env.SECRET_KEY, async function(err){
+           if(err){
+               return res.status(500).json({
+               status: "500",
+               message: 'Failed to authenticate token'
+               })   
+           }
+           
+       })
+}
 
 
 
 
 
 
-module.exports = {User,updatedUser, loginJwt};
+module.exports = {User,updatedUser, loginJwt, verifyToken};
