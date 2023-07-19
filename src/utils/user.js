@@ -1,5 +1,5 @@
 const Joi = require('joi');
-
+const jwt = require('jsonwebtoken');
 /*
  @params : user
  @Description: Created User function for use joi validation pass user parameters. this function return userSchema
@@ -71,5 +71,19 @@ const updatedUser = (user)=>{
        return userSchema.validate(user)
        }
 
+       /*
+        @params: userData
 
-module.exports = {User,updatedUser};
+        login validation
+       */
+       const loginJwt= (userData)=>{
+         return jwt.sign({userData},  process.env.SECRET_KEY, {expiresIn:"600s"});
+       }
+
+
+
+
+
+
+
+module.exports = {User,updatedUser, loginJwt};
