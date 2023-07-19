@@ -73,8 +73,6 @@ const updatedUser = (user)=>{
 
        /*
         @params: userData
-
-        login validation
        */
        const loginJwt= (userData)=>{
          return jwt.sign({userData},  process.env.SECRET_KEY, {expiresIn:"600s"});
