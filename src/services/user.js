@@ -1,6 +1,5 @@
 const db = require('../model')
 const User = db.user;
-const sequelize = db.sequelize;
 
 /****************************************************************************** 
 @params : userData
@@ -9,7 +8,6 @@ const sequelize = db.sequelize;
 *******************************************************************************/
 exports.addUser = async(userData)=>{
   try{
-    await sequelize.sync();
     const user = await User.create(userData)
     console.log(user)
     return user
@@ -27,7 +25,6 @@ exports.addUser = async(userData)=>{
 
 exports.getUser = async()=>{
   try{
-    await sequelize.sync();
     const user = await User.findAll({})
     console.log(user)
     return user
