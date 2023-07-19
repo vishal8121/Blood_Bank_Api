@@ -23,6 +23,16 @@ exports.data =(req,res,next)=>{
     }
 }
 
+
+/*
+@params: req, res, next
+@request : req.body data
+@response : status message.
+@Description: updateData function is middleware function for validate the user data while user update their details.
+require userMiddleware from utils and pass user(req.body) as argument in userMiddleware function. 
+if error any error return then response error status message with mentioned error and if no error occur then next() return
+*/
+
  exports.updateData = (req,res,next)=>{
     user = req.body
     response = userMiddleware.updatedUser(user);
