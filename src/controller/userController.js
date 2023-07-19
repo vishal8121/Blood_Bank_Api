@@ -75,3 +75,14 @@
             message: "User updated successfully"
         })
     }
+
+
+    exports.deleteUser = async (req,res) =>{
+        id = req.params.id;
+        const user = await service.deleteUser(id);
+        return res.status(201).json({
+            status: 201,
+            data: user, 
+            message: "User deleted successfully"
+        })
+    }

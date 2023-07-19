@@ -73,3 +73,19 @@ exports.updateUser = async (id,data) =>{
  }
 
 }
+
+
+exports.deleteUser = async (id) =>{
+  try{
+    const user = await User.destroy({
+     where:{
+       id:id
+     }
+    });
+    return user;
+  }
+  catch(e){
+   throw Error('Error :'+e);
+  }
+ 
+ }
