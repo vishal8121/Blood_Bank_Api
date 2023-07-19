@@ -76,6 +76,12 @@
         })
     }
 
+     /*
+      @Params : req and res
+     @request: id 
+     @response: status code with mention message.
+     @Description : This function return response for Deleted user. deleteUser function will be called and req.params.id pass as arguments to function. It return response for deleted user.
+     */
 
     exports.deleteUser = async (req,res) =>{
         id = req.params.id;
