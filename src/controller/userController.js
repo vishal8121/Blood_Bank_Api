@@ -56,3 +56,22 @@
         }
         return res.status(200).json({ status: 200, data: users, message: "All Users Data" });
     });
+
+      /*
+     @request: id and req.body(user data)
+     @response: status code with mention message.
+     @Params : req and res
+     @Description : This function return response for updated user. updateUser function will be called and req.params.id or req.body pass as arguments to function.
+
+     */
+
+    exports.updateUser = async (req,res) =>{
+        id = req.params.id;
+        data = req.body;
+        const user = await service.updateUser(id,data);
+        return res.status(201).json({
+            status: 201,
+            data: user, 
+            message: "User updated successfully"
+        })
+    }
