@@ -7,3 +7,5 @@ exports.allUsersRoute = userController.getUsers;
 exports.updateUserRoute = userController.updateUser;
 
 exports.deleteUserRoute = userController.deleteUser;
+
+exports.loginUserRoute = userController.loginUser;

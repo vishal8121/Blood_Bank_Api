@@ -14,3 +14,5 @@ router.put('/updateUser/:id',userMiddleware.updateData,userRoute.updateUserRoute
 
 router.delete('/delete/:id',userRoute.deleteUserRoute);
 module.exports = router
+
+router.patch('/login',userMiddleware.userLoginAuth, userRoute.loginUserRoute)
