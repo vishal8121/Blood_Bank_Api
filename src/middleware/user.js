@@ -1,4 +1,28 @@
 const userMiddleware = require('../utils/user')
+const jwt = require('jsonwebtoken');
+
+
+
+exports.verifyToken= (req,res,next) =>{
+    const token = req.headers['token'];
+    if(!token){
+        console.log(token)
+      return  res.status(401).json({ 
+            status: "401",
+            message: 'User are not authenticated.'
+             });
+    }
+    jwt.verify(token, process.env.SECRET_KEY, async function(err){
+        if(err){
+            return res.status(500).json({
+            status: "500",
+            message: 'Failed to authenticate token'
+            })   
+        }
+        next()
+    })
+}
+
 
 
 /*
@@ -45,11 +69,10 @@ if error any error return then response error status message with mentioned erro
         })
     }
     else{
-       const token = req.headers['token'];
-       userMiddleware.verifyToken(token);
        next()
     }
 }
+
 
 
 
