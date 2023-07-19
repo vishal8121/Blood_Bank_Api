@@ -59,6 +59,12 @@ exports.checkEmail = async (email) => {
 
 
 
+/****************************************************************************** 
+@params : id, data
+@Description : This function update the user details with matching user id and it return that user.
+
+*******************************************************************************/
+
 exports.updateUser = async (id,data) =>{
  try{
    const user = await User.update(data,{
@@ -74,6 +80,11 @@ exports.updateUser = async (id,data) =>{
 
 }
 
+/****************************************************************************** 
+@params : id
+@Description : This function Delete the user from database with matching user id and return.
+
+*******************************************************************************/
 
 exports.deleteUser = async (id) =>{
   try{
