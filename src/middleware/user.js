@@ -48,4 +48,12 @@ if error any error return then response error status message with mentioned erro
     }
 }
 
+exports.userLoginAuth = (req,res,next) => {
+     user = req.body
+     const token = userMiddleware.loginJwt(user);
+     console.log(token);
+     req.token = token;
+     next();
+};
+
  
