@@ -6,10 +6,11 @@ const userRoute = require('./user')
 
 
 
-router.post('/', userMiddleware.data, userRoute.userRegisterRoute)
+router.post('/', userMiddleware.data, userRoute.userRegisterRoute);
 
-router.get('/users',userRoute.allUsersRoute)
+router.get('/users',userRoute.allUsersRoute);
 
-router.put('/updateUser/:id',userMiddleware.updateData,userRoute.updateUserRoute)
+router.put('/updateUser/:id',userMiddleware.updateData,userRoute.updateUserRoute);
 
+router.delete('/delete/:id',userRoute.deleteUserRoute);
 module.exports = router
