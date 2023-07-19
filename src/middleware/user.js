@@ -1,5 +1,6 @@
 const userMiddleware = require('../utils/user')
 
+
 /*
 @params: req, res, next
 @request : req.body data
@@ -44,9 +45,13 @@ if error any error return then response error status message with mentioned erro
         })
     }
     else{
-        next()
+       const token = req.headers['token'];
+       userMiddleware.verifyToken(token);
+       next()
     }
 }
+
+
 
 exports.userLoginAuth = (req,res,next) => {
      user = req.body
