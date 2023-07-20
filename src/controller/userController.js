@@ -61,7 +61,7 @@ exports.getUsers = (async (req, res) => {
         return res.status(200).send(response.error("No Data Found:",200)); 
         // return res.status(200).json({ status: 200, data: users, message: "No data found" });
     }
-    return res.status(200).send(response.success("All Users Data",data,200));
+    return res.status(200).send(response.success("All Users Data",users,200));
     // return res.status(200).json({ status: 200, data: users, message: "All Users Data" });
 });
 
