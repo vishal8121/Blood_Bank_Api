@@ -3,13 +3,18 @@
 
   # Dev Dependencies installed in this project:-
    - eslint
-   - pre
+   - prettier
    - nodemon
 
   # Dependencies installed in this project:-
    - express
-   - mysql
+   - mysql2
    - dotenv
+   - bcrypt
+   - joi
+   - jsonwebtoken
+   - sequelize
+
    
   # In the project directory you can run:
     npm install or npm i
