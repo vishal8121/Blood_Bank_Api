@@ -78,11 +78,39 @@ const updatedUser = (user)=>{
          return jwt.sign({userData},  process.env.SECRET_KEY, {expiresIn:"600s"});
        }
 
-       
+       const success = (message,data,statusCode)=>{
+              
+              const info = {
+                     "status": statusCode,
+                     "message": message,
+                     "data": data,
+                     "error": false
+              }
+              
+              return info
+       }
+
+
+       const error = (msg,statusCode)=>{
+              const codes = [200, 201, 400, 403, 500]
+              // get match code 
+              const findCode = codes.find((code)=> code == statusCode);
+
+              if(!findCode) statusCode = 500;
+              else statusCode = findCode
+              const info = {
+                     "status": statusCode,
+                     "message": msg,
+                     "error": true
+
+              }
+              console.log(info)
+              return info
+       }
 
 
 
 
 
 
-module.exports = {User,updatedUser, loginJwt};
+module.exports = {User,updatedUser, loginJwt, error, success};
