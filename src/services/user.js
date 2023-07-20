@@ -99,6 +99,13 @@ exports.deleteUser = async (id) =>{
  }
 
 
+ /**************************************************************************** 
+  
+@params : email
+@Description : This function find the user from database with matching email  and update their status inactive to active and return that user. if user is not found then return user not found.
+
+*******************************************************************************/
+
  exports.loginUser = async(email)=>{
    try{
       const oldUser = await User.findOne({
