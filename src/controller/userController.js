@@ -3,14 +3,22 @@ const bcrypt = require('bcrypt');
 const response = require('../utils/user')
 const db = require('../model/index');
 const sequelize = db.sequelize
-/*
+
+
+
+
+/***********************************************************************
+ 
  @Params : req and res
  @Request : req.body
  @Response : request status in json format with status code
  @Description : userRegister function request data from user.
  checkEmail function check email already exist or not.
  if user data not exist(user == null) user created else send response user already registered.  
- addUser function require from service file and called in this function and pass userData (req.body) data as arguments , In response user status return */
+ addUser function require from service file and called in this function and pass userData (req.body) data as arguments , In response user status return 
+
+ *****************************************************************************/
+
 exports.userRegister = async (req, res) => {
     await sequelize.sync();
     const user = await service.checkEmail(req.body.email);
@@ -40,10 +48,12 @@ exports.userRegister = async (req, res) => {
     }
 }
 
-/*
+
+/*******************************************************************************
 @Params : req and res
 @Response : user data and status
-*/
+
+******************************************************************************/
 
 exports.getUsers = (async (req, res) => {
     const users = await service.getUser()
@@ -55,13 +65,15 @@ exports.getUsers = (async (req, res) => {
     // return res.status(200).json({ status: 200, data: users, message: "All Users Data" });
 });
 
-/*
+
+/**********************************************************************
+ 
 @request: id and req.body(user data)
 @response: status code with mention message.
 @Params : req and res
 @Description : This function return response for updated user. updateUser function will be called and req.params.id or req.body pass as arguments to function.
 
-*/
+************************************************************************/
 
 exports.updateUser = async (req, res) => {
     const id = req.params.id;
@@ -70,12 +82,15 @@ exports.updateUser = async (req, res) => {
     return res.send(response.success("User updated successfully",data,200));
 }
 
-/*
+
+/*****************************************************************************
+ 
  @Params : req and res
 @request: id 
 @response: status code with mention message.
 @Description : This function return response for Deleted user. deleteUser function will be called and req.params.id pass as arguments to function. It return response for deleted user.
-*/
+
+*****************************************************************************/
 
 exports.deleteUser = async (req, res) => {
     id = req.params.id;
@@ -83,12 +98,16 @@ exports.deleteUser = async (req, res) => {
     return res.status(200).send(response.success("User deleted successfully",user,200));
 }
 
-/*
+
+/****************************************************************************
+
  @Params : req and res
 @request: req.body data
 @response: status code with mention message.
 @Description : This function return response for login  user. loginUSer function will be called and email pass as arguments to function. It return response for  user login status.
-*/
+
+*****************************************************************************/
+
 
 exports.loginUser = async (req, res) => {
     try {
@@ -98,33 +117,16 @@ exports.loginUser = async (req, res) => {
             if (await bcrypt.compare(password, user.password)) {
                 // Passwords match
                 return res.send(response.success("User login successfully",user,200));
-                // return res.status(200).json({
-                //     status: "200",
-                //     data: user,
-                //     message: "User login successfully",
-                //     token: req.token
-                // });
             } else {
                 // Passwords do not match
               return res.status(403).send(response.error("Password incorrect",403)); 
-                // return res.status(403).json({
-                //     status: "403",
-                //     data: user,
-                //     message: "Password incorrect"
-                // });
             }
         }
         // User not found
-        return res.status(403).send(response.error("User does not exist",403)); 
-        // return res.status(403).send("User does not exist");
+        return res.status(403).send(response.error("User does not exist",403));
     } catch (e) {
         console.log("Error" + e);
         return res.status(500).send(response.error("Internal Server Error:"+e,500)); 
-
-        // return res.status(500).json({
-        //     status: "500",
-        //     message: "Internal Server Error"
-        // });
     }
 };
 
