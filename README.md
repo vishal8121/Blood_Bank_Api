@@ -22,7 +22,7 @@
   # Run the project development mode:-
      npm run dev
 
-  # Token generation:-
+  # Use Token:-
    When user login, token generated for user, check console after login.
    When use put, patch, delete request methods use generated token for user.
    In postman fill generated token in header.
