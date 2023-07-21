@@ -81,7 +81,7 @@ exports.updateUser = async (id,data) =>{
       id : id
     }
    });
-   
+
    return user;
  }
  catch(e){
@@ -142,3 +142,19 @@ exports.deleteUser = async (id) =>{
    }
 
  }
+
+
+
+ exports.findId = async (id) => {
+  try {
+      const user = await User.findOne({ 
+          where: {
+              id: id
+          }
+      })
+      // console.log(user)
+      return user;
+  } catch (e) {
+      throw e ;
+  }
+};
