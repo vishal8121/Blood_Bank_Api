@@ -81,6 +81,7 @@ exports.updateUser = async (id,data) =>{
       id : id
     }
    });
+   
    return user;
  }
  catch(e){

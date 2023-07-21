@@ -77,6 +77,7 @@ exports.updateUser = async (req, res) => {
     const id = req.params.id;
     const data = req.body;
     await service.updateUser(id, data);
+    data.updated_by = data.name;
     return response(res,"User updated successfully",data,"200");
 }
 

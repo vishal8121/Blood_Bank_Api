@@ -64,8 +64,7 @@ const updatedUser = (user)=>{
              address: Joi.string(),
        
              last_donation_date: Joi.date(),
-             updated_by: Joi.string()
-                         .required(),
+            
        
        });
        return userSchema.validate(user)
