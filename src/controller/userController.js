@@ -1,6 +1,7 @@
 const service = require("../services/user");
 const bcrypt = require('bcrypt');
-const response = require('../utils/user')
+const getAllUtils = require('../utils/user')
+const response = getAllUtils.sendResponse
 const db = require('../model/index');
 const sequelize = db.sequelize
 
@@ -40,11 +41,10 @@ exports.userRegister = async (req, res) => {
             created_by: req.body.name
         }
         const data = await service.addUser(userData);
-        return res.status(201).send(response.success("User created successfully",data,201));
-    
+        return response(res,"User created successfully",data,"201")
     }
     else {
-        return res.send(response.error("User email already registered",200));
+        return response(res,"User not created",null,200,"User email already registered")
     }
 }
 
@@ -58,11 +58,9 @@ exports.userRegister = async (req, res) => {
 exports.getUsers = (async (req, res) => {
     const users = await service.getUser()
     if (users.length == 0) {
-        return res.status(200).send(response.error("No Data Found:",200)); 
-        // return res.status(200).json({ status: 200, data: users, message: "No data found" });
+        return response(res,"No Data Found",null,"200");
     }
-    return res.status(200).send(response.success("All Users Data",users,200));
-    // return res.status(200).json({ status: 200, data: users, message: "All Users Data" });
+    return response(res,"All Users Data",users,"200");
 });
 
 
@@ -79,7 +77,7 @@ exports.updateUser = async (req, res) => {
     const id = req.params.id;
     const data = req.body;
     await service.updateUser(id, data);
-    return res.send(response.success("User updated successfully",data,200));
+    return response(res,"User updated successfully",data,"200");
 }
 
 
@@ -95,7 +93,7 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
     id = req.params.id;
     const user = await service.deleteUser(id);
-    return res.status(200).send(response.success("User deleted successfully",user,200));
+    return response(res,"User deleted successfully",user,"200");
 }
 
 
@@ -116,17 +114,17 @@ exports.loginUser = async (req, res) => {
         if (user != null) {
             if (await bcrypt.compare(password, user.password)) {
                 // Passwords match
-                return res.send(response.success("User login successfully",user,200));
+                return response(res,"User login successfully",user,"200");
             } else {
                 // Passwords do not match
-              return res.status(403).send(response.error("Password incorrect",403)); 
+               return response(res,"User password incorrect",null,"403",true);
             }
         }
         // User not found
-        return res.status(403).send(response.error("User does not exist",403));
+        return response(res,"User does not exist",null,"403",true);
     } catch (e) {
         console.log("Error" + e);
-        return res.status(500).send(response.error("Internal Server Error:"+e,500)); 
+        return response(res,"Internal Server Error"+e,null,"500",true);
     }
 };
 

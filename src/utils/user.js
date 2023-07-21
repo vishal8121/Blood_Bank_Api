@@ -78,33 +78,20 @@ const updatedUser = (user)=>{
          return jwt.sign({userData},  process.env.SECRET_KEY, {expiresIn:"600s"});
        }
 
-       const success = (message,data,statusCode)=>{
-              
+       const sendResponse = (res, message, data, statusCode, isError = false) =>{
               const info = {
-                     "status": statusCode,
-                     "message": message,
-                     "data": data,
-                     "error": false
-              }
-              
-              return info
-       }
-
-
-       const error = (msg,statusCode)=>{
-              const info = {
-                     "status": statusCode,
-                     "message": msg,
-                     "error": true
-
-              }
-              console.log(info)
-              return info
-       }
+                status: statusCode,
+                message: message,
+                data: data,
+                error: isError,
+              };
+            
+              console.log(info);
+              res.status(statusCode).json(info);
+            }
 
 
 
 
 
-
-module.exports = {User,updatedUser, loginJwt, error, success};
+module.exports = {User,updatedUser, loginJwt, sendResponse};

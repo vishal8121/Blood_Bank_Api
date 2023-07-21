@@ -1,7 +1,8 @@
 const userMiddleware = require('../utils/user')
 const jwt = require('jsonwebtoken');
-const responseObj = require('../utils/user')
-
+// const responseObj = require('../utils/user')
+const getAllUtils = require('../utils/user')
+const response = getAllUtils.sendResponse
 
 
 /********************************************************************
@@ -17,11 +18,11 @@ exports.verifyToken= (req,res,next) =>{
     const token = req.headers['token'];
     if(!token){
         console.log(token)
-        return res.status(401).send(responseObj.error("User not authenticated",401));
+        return response(res,"User not authenticated",null,"401",true);
     }
     jwt.verify(token, process.env.SECRET_KEY, async function(err){
         if(err){
-            return res.status(500).send(responseObj.error("Failed to authenticate token",500));
+            return response(res,"Failed to authenticate token",null,"500",true);
         }
         next()
     })
@@ -41,9 +42,9 @@ if error any error return then response error status message with mentioned erro
 ************************************************************************/
 exports.data =(req,res,next)=>{
     user = req.body
-    response = userMiddleware.User(user);
-    if(response.error){
-        return res.status(400).send(responseObj.error("User not created",400));
+    responseObj = userMiddleware.User(user);
+    if(responseObj.error){
+        return response(res,"User not created",null,"400",responseObj.error.details[0].message);
     }
     else{
         next()
@@ -64,9 +65,9 @@ if error any error return then response error status message with mentioned erro
 
  exports.updateData = (req,res,next)=>{
     user = req.body
-    response = userMiddleware.updatedUser(user);
-    if(response.error){
-        return res.status(400).send(responseObj.error(response.error.details[0].message,400));
+    responseResult = userMiddleware.updatedUser(user);
+    if(responseResult.error){
+        return res.status(400).send(responseObj.error(responseResult.error.details[0].message,400));
     }
     else{
        next()
