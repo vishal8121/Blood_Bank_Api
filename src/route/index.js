@@ -10,9 +10,9 @@ router.post('/', userMiddleware.data, userRoute.userRegisterRoute);
 
 router.get('/users',userRoute.allUsersRoute);
 
-router.put('/updateUser/:id',userMiddleware.verifyToken,userMiddleware.updateData,userRoute.updateUserRoute);
+router.put('/updateUser',userMiddleware.verifyToken,userMiddleware.updateData,userRoute.updateUserRoute);
 
-router.delete('/delete/:id',userMiddleware.verifyToken, userRoute.deleteUserRoute);
+router.delete('/delete',userMiddleware.verifyToken, userRoute.deleteUserRoute);
 
 router.patch('/login',userMiddleware.userLoginAuth, userRoute.loginUserRoute)
 
