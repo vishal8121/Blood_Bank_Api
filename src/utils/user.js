@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
+const getId = require('../services/user')
 /*
  @params : user
  @Description: Created User function for use joi validation pass user parameters. this function return userSchema
@@ -71,10 +72,18 @@ const updatedUser = (user)=>{
        }
 
        /*
-        @params: userData
+        @params: userData 
        */
-       const loginJwt= (userData)=>{
-         return jwt.sign({userData},  process.env.SECRET_KEY, {expiresIn:"600s"});
+       const loginJwt=  async(userData)=>{
+         const userId = await getId.checkEmail(userData);
+         if (userId){
+          console.log(userId);
+          const token =  jwt.sign({id:userId.id, email:userId.email},  process.env.SECRET_KEY, {expiresIn:"600s"});
+          // console.log(token);
+          // req.data = token; 
+          return token
+         }
+         return "user not exist";
        }
 
        const sendResponse = (res, message, data, statusCode, isError = false) =>{
