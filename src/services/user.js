@@ -35,6 +35,18 @@ exports.getUser = async()=>{
 }
 
 
+exports.getById = async(id)=>{
+  try{
+    const user = await User.findById({
+      id: id
+    })
+    return user;
+  }
+  catch(e){
+    console.log(e); 
+  }
+}
+
 /****************************************************************************** 
 @params : email
 @Description : created checkEmail check existing email if email exists in database it return that user and if error occurs then throw error
