@@ -14,19 +14,22 @@ const response = getAllUtils.sendResponse
 if token not present in req.headers then return response error message and if token present then verify token if token is valid then return next() else show authentication error message  
 
 *********************************************************************/
-exports.verifyToken= (req,res,next) =>{
+exports.verifyToken = (req, res, next) => {
     const token = req.headers['token'];
-    if(!token){
-        console.log(token)
-        return response(res,"User not authenticated",null,"401",true);
-    }
-    jwt.verify(token, process.env.SECRET_KEY, async function(err){
-        if(err){
-            return response(res,"Failed to authenticate token",null,"500",true);
+    if (!token) {
+        console.log(token);
+        return response(res, "User not authenticated", null, 401, true);
+    } else {
+        try {
+            const decode = jwt.verify(token, process.env.SECRET_KEY);
+            req.data = decode.id;
+            console.log(req.data);
+            next();
+        } catch (error) {
+            return response(res, "Failed to authenticate token", null, 500, true);
         }
-        next()
-    })
-}
+    }
+};
 
 
 
@@ -82,9 +85,9 @@ if error any error return then response error status message with mentioned erro
 
 ***************************************************************/
 
-exports.userLoginAuth = (req,res,next) => {
+exports.userLoginAuth = async(req,res,next) => {
      user = req.body
-     const token = userMiddleware.loginJwt(user);
+     const token = await userMiddleware.loginJwt(user.email);
      req.token = token;
      console.log(token);
      next();
