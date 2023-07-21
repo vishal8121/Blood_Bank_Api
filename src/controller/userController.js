@@ -74,10 +74,13 @@ exports.getUsers = (async (req, res) => {
 ************************************************************************/
 
 exports.updateUser = async (req, res) => {
-    const id = req.params.id;
+    const tokenId = req.data; 
+    console.log(tokenId)
+    // const id = req.params.id;
+    const dataId = await service.findId(tokenId);
     const data = req.body;
-    await service.updateUser(id, data);
-    data.updated_by = data.name;
+    data.updated_by = dataId.name;
+    await service.updateUser(dataId.id, data);
     return response(res,"User updated successfully",data,"200");
 }
 
