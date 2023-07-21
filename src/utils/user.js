@@ -92,12 +92,6 @@ const updatedUser = (user)=>{
 
 
        const error = (msg,statusCode)=>{
-              const codes = [200, 201, 400, 403, 500]
-              // get match code 
-              const findCode = codes.find((code)=> code == statusCode);
-
-              if(!findCode) statusCode = 500;
-              else statusCode = findCode
               const info = {
                      "status": statusCode,
                      "message": msg,
