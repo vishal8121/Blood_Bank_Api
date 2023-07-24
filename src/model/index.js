@@ -11,6 +11,7 @@ db.sequelize = sequelize;
 
 // Include user model file
 db.user = require('./user')(sequelize, DataTypes);
+db.superUser = require('./superUser')(sequelize, DataTypes);
 db.sequelize.sync();
 
 
