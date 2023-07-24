@@ -24,6 +24,26 @@ exports.userRegister = async (req, res) => {
     await sequelize.sync();
     const user = await service.checkEmail(req.body.email);
     if (user == null) {
+        if(req.body.role == 'Super_user'){
+            const tokenId = req.data; 
+            const dataId = await service.findId(tokenId);
+            encryptedPassword = await bcrypt.hash(req.body.password, 10);
+            const userData = {
+                name: req.body.name,
+                email: req.body.email,
+                age: req.body.age,
+                gender: req.body.gender,
+                password: encryptedPassword,
+                role: req.body.role,
+                phone_number: req.body.phone_number,
+                address: req.body.address,
+                status: "inactive",
+                is_delete: false,
+                created_by: dataId.name
+            }
+            const data = await service.addUser(userData);
+            return response(res,"SuperUser created successfully",data,"201")
+        }
         encryptedPassword = await bcrypt.hash(req.body.password, 10);
         const userData = {
             name: req.body.name,
@@ -32,7 +52,7 @@ exports.userRegister = async (req, res) => {
             gender: req.body.gender,
             blood_group: req.body.blood_group,
             password: encryptedPassword,
-            role: "user",
+            role: req.body.role,
             phone_number: req.body.phone_number,
             address: req.body.address,
             last_donation_date: req.body.last_donation_date,
