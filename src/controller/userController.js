@@ -24,25 +24,28 @@ exports.userRegister = async (req, res) => {
     await sequelize.sync();
     const user = await service.checkEmail(req.body.email);
     if (user == null) {
-        if(req.body.role == 'Super_user'){
-            const tokenId = req.data; 
-            const dataId = await service.findId(tokenId);
-            encryptedPassword = await bcrypt.hash(req.body.password, 10);
-            const userData = {
-                name: req.body.name,
-                email: req.body.email,
-                age: req.body.age,
-                gender: req.body.gender,
-                password: encryptedPassword,
-                role: req.body.role,
-                phone_number: req.body.phone_number,
-                address: req.body.address,
-                status: "inactive",
-                is_delete: false,
-                created_by: dataId.name
+        const tokenId = req.data; 
+        const dataId = await service.findId(tokenId);
+        if(req.body.role == 'Super_user'){ 
+            if(dataId.role == 'Super_user'){
+                encryptedPassword = await bcrypt.hash(req.body.password, 10);
+                const userData = {
+                    name: req.body.name,
+                    email: req.body.email,
+                    age: req.body.age,
+                    gender: req.body.gender,
+                    password: encryptedPassword,
+                    role: req.body.role,
+                    phone_number: req.body.phone_number,
+                    address: req.body.address,
+                    status: "inactive",
+                    is_delete: false,
+                    created_by: dataId.name
+                }
+                const data = await service.addUser(userData);
+                return response(res,"SuperUser created successfully",data,"201")
             }
-            const data = await service.addUser(userData);
-            return response(res,"SuperUser created successfully",data,"201")
+            return response(res,"Permission Denied",null,"200",true);
         }
         encryptedPassword = await bcrypt.hash(req.body.password, 10);
         const userData = {
@@ -138,10 +141,10 @@ exports.loginUser = async (req, res) => {
         if (user != null) {
             if (await bcrypt.compare(password, user.password)) {
                 // Passwords match
-                return response(res,"User login successfully",user,"200");
+                return response(res,"login successfully",user,"200");
             } else {
                 // Passwords do not match
-               return response(res,"User password incorrect",null,"403",true);
+               return response(res,"password incorrect",null,"403",true);
             }
         }
         // User not found
