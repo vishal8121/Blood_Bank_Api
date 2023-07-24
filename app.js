@@ -7,7 +7,7 @@ const port = process.env.PORT;
 require('./src/config/connection')
  
 const bodyParser = require('body-parser')    
-app.use(express.json());
+app.use(express.json()); 
 app.use(router); 
 app.use(bodyParser.json()) 
     
