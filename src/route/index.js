@@ -8,6 +8,8 @@ const userRoute = require('./user')
 
 router.post('/', userMiddleware.data, userRoute.userRegisterRoute);
 
+router.post('/registerSuperUser',userMiddleware.verifyToken, userMiddleware.data, userRoute.userRegisterRoute);
+
 router.get('/users',userRoute.allUsersRoute);
 
 router.put('/updateUser',userMiddleware.verifyToken,userMiddleware.updateData,userRoute.updateUserRoute);
