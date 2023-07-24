@@ -9,3 +9,5 @@ exports.updateUserRoute = userController.updateUser;
 exports.deleteUserRoute = userController.deleteUser;
 
 exports.loginUserRoute = userController.loginUser;
+
+// exports.logoutUserRoute = userController.logoutUser;

@@ -24,9 +24,10 @@ exports.userRegister = async (req, res) => {
     await sequelize.sync();
     const user = await service.checkEmail(req.body.email);
     if (user == null) {
-        const tokenId = req.data; 
-        const dataId = await service.findId(tokenId);
+        
         if(req.body.role == 'Super_user'){ 
+            const tokenId = req.data; 
+            const dataId = await service.findId(tokenId);
             if(dataId.role == 'Super_user'){
                 encryptedPassword = await bcrypt.hash(req.body.password, 10);
                 const userData = {
@@ -154,6 +155,17 @@ exports.loginUser = async (req, res) => {
         return response(res,"Internal Server Error"+e,null,"500",true);
     }
 };
+
+// exports.logoutUser = async(req, res) =>{
+//     try{
+//           tokenId = req.data
+//           const user = await service.logout(tokenId);
+//           return response(res,"Logout successfully",user.name,"200");
+//     }
+//     catch(e){
+//         console.log("Error" + e);
+//     }
+// }
 
 
 

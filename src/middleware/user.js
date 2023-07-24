@@ -16,10 +16,7 @@ if token not present in req.headers then return response error message and if to
 *********************************************************************/
 exports.verifyToken = (req, res, next) => {
     const token = req.headers['token'];
-    if (!token) {
-        console.log(token);
-        return response(res, "User not authenticated", null, 401, true);
-    } else {
+    if (token) {
         try {
             const decode = jwt.verify(token, process.env.SECRET_KEY);
             req.data = decode.id;
@@ -28,9 +25,18 @@ exports.verifyToken = (req, res, next) => {
         } catch (error) {
             return response(res, "Failed to authenticate token", null, 500, true);
         }
+    } else {
+        console.log(token);
+        return response(res, "User not authenticated", null, 401, true);
     }
 };
 
+// exports.logout = (req,res,next) =>{
+//      const token = req.headers['token'];
+//      const tokenId = req.data
+//      getAllUtils.logout(token);
+//      return next(tokenId);
+// }
 
 
 /*******************************************************************
@@ -92,5 +98,3 @@ exports.userLoginAuth = async(req,res,next) => {
      console.log(token);
      next();
 };
-
- 

@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 const getId = require('../services/user')
+// const expireToken = new Set(); 
 /*
  @params : user
  @Description: Created User function for use joi validation pass user parameters. this function return userSchema
@@ -88,6 +89,12 @@ const updatedUser = (user)=>{
          return "user not exist";
        }
 
+      // const logout = async(token)=>{
+      //       expireToken.add(token);
+      //       setTimeout(()=>expireToken.delete(token),0*0*601);
+      // }
+
+
        const sendResponse = (res, message, data, statusCode, isError = false) =>{
               const info = {
                 status: statusCode,
@@ -102,6 +109,6 @@ const updatedUser = (user)=>{
 
 
 
-
+ 
 
 module.exports = {User,updatedUser, loginJwt, sendResponse};

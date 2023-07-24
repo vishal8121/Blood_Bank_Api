@@ -90,6 +90,22 @@ exports.updateUser = async (id,data) =>{
 
 }
 
+
+// exports.logout = async(id)=>{
+//   try{
+//     const user = await User.update({status:"inactive"},{
+//      where:{
+//        id : id
+//      }
+//     });
+ 
+//     return user;
+//   }
+//   catch(e){
+//    throw Error('Error :'+e);
+//   }
+// }
+
 /****************************************************************************** 
 @params : id
 @Description : This function Delete the user from database with matching user id and return.
