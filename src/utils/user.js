@@ -18,12 +18,14 @@ const User = (user)=>{
 
       age: Joi.number()
            .required(),
+      
+      role: Joi.string()
+            .required(),
 
       gender: Joi.string()
               .required(),
 
-      blood_group: Joi.string()
-                   .required(),
+      blood_group: Joi.string(),
 
       password: Joi.string()
                 .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
