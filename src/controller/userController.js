@@ -95,9 +95,9 @@ exports.updateUser = async (req, res) => {
 *****************************************************************************/
 
 exports.deleteUser = async (req, res) => {
-    id = req.params.id;
-    const user = await service.deleteUser(id);
-    return response(res,"User deleted successfully",user,"200");
+    id = req.data;
+    await service.deleteUser(id);
+    return response(res,"User deleted successfully",null,"200");
 }
 
 
