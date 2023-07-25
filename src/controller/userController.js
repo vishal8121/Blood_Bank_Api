@@ -21,7 +21,7 @@ const sequelize = db.sequelize
  *****************************************************************************/
 
 exports.userRegister = async (req, res) => {
-    await sequelize.sync();
+    await sequelize.sync({force: true});
     const user = await service.checkEmail(req.body.email);
     if (user == null) {
         
@@ -41,7 +41,6 @@ exports.userRegister = async (req, res) => {
                     address: req.body.address,
                     account_status: "activated",
                     status: "inactive",
-                    is_delete: false,
                     created_by: dataId.name
                 }
                 const data = await service.addUser(userData);
@@ -63,7 +62,6 @@ exports.userRegister = async (req, res) => {
             last_donation_date: req.body.last_donation_date,
             account_status: "activated",
             status: "inactive",
-            is_delete: false,
             created_by: req.body.name
         }
         const data = await service.addUser(userData);
