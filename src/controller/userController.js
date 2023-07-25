@@ -21,10 +21,9 @@ const sequelize = db.sequelize
  *****************************************************************************/
 
 exports.userRegister = async (req, res) => {
-    await sequelize.sync({force: true});
+    await sequelize.sync();
     const user = await service.checkEmail(req.body.email);
     if (user == null) {
-        
         if(req.body.role == 'Super_user'){ 
             const tokenId = req.data; 
             const dataId = await service.findId(tokenId);
@@ -44,12 +43,25 @@ exports.userRegister = async (req, res) => {
                     created_by: dataId.name
                 }
                 const data = await service.addUser(userData);
-                return response(res,"SuperUser created successfully",data,"201")
+                return response(res,"Super User created successfully",data,"201")
             }
             return response(res,"Permission Denied",null,"200",true);
         }
-        encryptedPassword = await bcrypt.hash(req.body.password, 10);
-        const userData = {
+         encryptedPassword = await bcrypt.hash(req.body.password, 10);
+          account_status = "activated";
+          msg = "User created successfully"
+         if(req.body.role == "admin"){
+            account_status = "deactivated"
+            msg = "Check your email !"
+            let mailDetails = {
+                from: 'vishalkumarwins@gmail.com',
+                to: req.body.email,
+                subject: 'Blood Bank Request',
+                text: "Your registration has been received and is currently being processed by our team!"
+            };
+             getAllUtils.sendEmail(mailDetails)
+        }
+            const userData = {
             name: req.body.name,
             email: req.body.email,
             age: req.body.age,
@@ -60,13 +72,14 @@ exports.userRegister = async (req, res) => {
             phone_number: req.body.phone_number,
             address: req.body.address,
             last_donation_date: req.body.last_donation_date,
-            account_status: "activated",
+            account_status: account_status,
             status: "inactive",
             created_by: req.body.name
         }
         const data = await service.addUser(userData);
-        return response(res,"User created successfully",data,"201")
-    }
+        return response(res,msg,data,"201")
+        }     
+    
     else {
         return response(res,"User not created",null,200,"User email already registered")
     }

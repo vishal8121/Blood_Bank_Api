@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 const getId = require('../services/user')
+const nodemailer = require('nodemailer');
 // const expireToken = new Set(); 
 /*
  @params : user
@@ -107,8 +108,23 @@ const updatedUser = (user)=>{
               res.status(statusCode).json(info);
             }
 
-
+ const sendEmail = (mailDetails)=>{
+      let mailTransporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'vishalkumarwins@gmail.com',
+                pass: 'oqvoqqalurxnpump'
+            }
+        });
+      mailTransporter.sendMail(mailDetails, function(err, data) {
+            if(err) {
+                console.log('Error Occurs');
+            } else {
+                console.log('Email sent successfully');
+            } 
+        });
+ }
 
  
 
-module.exports = {User,updatedUser, loginJwt, sendResponse};
+module.exports = {User,updatedUser, loginJwt, sendResponse, sendEmail};
