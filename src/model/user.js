@@ -51,11 +51,6 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull:false
    },
-   is_delete:{
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false
-   },
    created_by:{
     type: DataTypes.STRING,
     allowNull: false,
@@ -64,7 +59,8 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
    }
 },  {
-  tableName: 'users'
+  tableName: 'users',
+  paranoid: true
 
 });
     
