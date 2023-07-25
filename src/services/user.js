@@ -34,6 +34,26 @@ exports.getUser = async()=>{
   }
 }
 
+exports.getBloodBankReq = async()=>{
+  try{
+    const requestedBanks = await User.findAll({
+      where: {
+        account_status: "deactivated"
+      }
+    })
+    // console.log(requestedBanks)
+    return requestedBanks;
+    }
+  catch(e){
+    console.log(e);
+  }
+}
+
+
+
+
+
+
 
 exports.getById = async(id)=>{
   try{
@@ -87,7 +107,24 @@ exports.updateUser = async (id,data) =>{
  catch(e){
   throw Error('Error :'+e);
  }
+}
 
+exports.acceptRequest = async(id) =>{
+  try{
+     const request = await User.update({
+      account_status : "activated"
+     },
+     {
+      where : {
+       id : id
+      }
+     }
+     )
+     return request
+  }
+  catch(e){
+    throw Error('Error :'+e);
+  }
 }
 
 
@@ -158,7 +195,6 @@ exports.deleteUser = async (id) =>{
    }
 
  }
-
 
 
  exports.findId = async (id) => {
