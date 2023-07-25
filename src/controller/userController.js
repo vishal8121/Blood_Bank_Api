@@ -169,6 +169,61 @@ exports.loginUser = async (req, res) => {
     }
 };
 
+ exports.pendingRequests = async(req, res) =>{
+    try{
+        const id = req.data
+        const data = await service.findId(id);
+        if(data.role == "Super_user"){
+            const requestedBanks = await service.getBloodBankReq();
+            // console.log(requestedBanks)
+                if (requestedBanks.length == 0) {
+                    return response(res,"No Data Found",null,"200");
+                }
+                return response(res,"All Pending Requests",requestedBanks,"200");
+        }
+            return response(res,"Permission denied",null,"403",true);
+    }
+    catch(e){
+        console.log("Error" + e);
+        return response(res,"Internal Server Error"+e,null,"500",true);
+    }
+ }
+
+ exports.acceptBankRequest = async(req, res)=>{
+    try{
+        const id = req.data
+        const data = await service.findId(id);
+        if(data.role == "Super_user"){
+       const data = await service.acceptRequest(req.body.id)
+       if(data>0){
+        let mailDetails = {
+            from: 'vishalkumarwins@gmail.com',
+            to: req.body.email,
+            subject: 'Request Approval',
+            text: "Your request has been approved."
+        };
+         getAllUtils.sendEmail(mailDetails)
+         return response(res,"check your email for confirmation",data,"200");
+       }
+    }
+    return response(res,"Permission denied",null,"403");
+    }
+    catch(e){
+        console.log("Error" + e);
+        return response(res,"Internal Server Error"+e,null,"500",true);
+    }
+ }
+
+
+
+
+
+
+
+
+
+
+
 // exports.logoutUser = async(req, res) =>{
 //     try{
 //           tokenId = req.data
