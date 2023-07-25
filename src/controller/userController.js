@@ -39,6 +39,7 @@ exports.userRegister = async (req, res) => {
                     role: req.body.role,
                     phone_number: req.body.phone_number,
                     address: req.body.address,
+                    account_status: "activated",
                     status: "inactive",
                     is_delete: false,
                     created_by: dataId.name
@@ -60,6 +61,7 @@ exports.userRegister = async (req, res) => {
             phone_number: req.body.phone_number,
             address: req.body.address,
             last_donation_date: req.body.last_donation_date,
+            account_status: "activated",
             status: "inactive",
             is_delete: false,
             created_by: req.body.name

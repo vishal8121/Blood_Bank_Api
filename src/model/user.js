@@ -47,6 +47,10 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false
    },
+   account_status:{
+    type: DataTypes.STRING,
+    allowNull:false
+   },
    is_delete:{
     type: DataTypes.BOOLEAN,
     allowNull: false,
@@ -61,6 +65,7 @@ const User = sequelize.define('User', {
    }
 },  {
   tableName: 'users'
+
 });
     
 return User;
