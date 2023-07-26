@@ -14,11 +14,17 @@
    - joi
    - jsonwebtoken
    - sequelize
-
-   
+  
+ 
   # In the project directory you can run:
     npm install or npm i
 
+   # At first-time run migration: (Only once)
+    npx sequelize-cli db:migrate
+
+    After that run seed command:
+    npx sequelize-cli db:seed:all (default superUser created [email: su.superuser@gmail.com, password: Super@1234] )
+   
   # Run the project development mode:-
      npm run dev
 
@@ -26,3 +32,5 @@
    When user login, token generated for user, check console after login.
    When use put, patch, delete request methods use generated token for user.
    In postman fill generated token in header.
+
+    
