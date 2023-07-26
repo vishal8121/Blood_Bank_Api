@@ -21,7 +21,7 @@ module.exports = {
         account_status: 'activated',
         created_by: 'Super User',
         createdAt: new Date(),
-        updatedAt: 'null'
+        updatedAt: new Date(),
       }], {});
   
   },
