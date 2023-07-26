@@ -11,8 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasOne(models.Action);
+      models.Action.belongsTo(User); 
     }
-  }
+  } 
   User.init({
     name: {
       type: DataTypes.STRING,
