@@ -19,11 +19,13 @@
   # In the project directory you can run:
     npm install or npm i
 
-   # At first-time run migration: (Only once)
+   # In src directory you can run migration commands at first-time : (Only once)
     npx sequelize-cli db:migrate
 
     After that run seed command:
-    npx sequelize-cli db:seed:all (default superUser created [email: su.superuser@gmail.com, password: Super@1234] )
+
+    npx sequelize-cli db:seed:all 
+    // (default superUser created [email: su.superuser@gmail.com, password: Super@1234] )
    
   # Run the project development mode:-
      npm run dev
