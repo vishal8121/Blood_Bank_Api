@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      
     }
   }
   Action.init({
@@ -23,13 +24,6 @@ module.exports = (sequelize, DataTypes) => {
     units: {
       type: DataTypes.INTEGER,
       allowNull: false
-    },
-    user_id:{
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    blood_bank_id:{
-      type: DataTypes.INTEGER,
     },
     blood_group:{
      type: DataTypes.STRING,

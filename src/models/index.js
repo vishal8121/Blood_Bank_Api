@@ -21,6 +21,7 @@ db.sequelize = sequelize;
 
 // Include user model file
 db.user = require('./user')(sequelize, DataTypes);
+db.action = require('./action')(sequelize, DataTypes);
 db.bloodBank = require('./bloodBank')(sequelize, DataTypes);
 db.sequelize.sync();
 
@@ -47,7 +48,7 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
-
+// db.sequelize = sequelize; 
+// db.Sequelize = Sequelize;
+ 
 module.exports = db;
