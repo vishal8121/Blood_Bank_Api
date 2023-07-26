@@ -1,5 +1,6 @@
 const db = require('../models')
 const User = db.user;
+const Action = db.action;
 
 /****************************************************************************** 
 @params : userData
@@ -210,3 +211,15 @@ exports.deleteUser = async (id) =>{
       throw e ;
   }
 };
+
+
+exports.bloodRequest = async(data)=>{
+  try{
+    const bloodReq = await Action.create(data)
+    console.log(bloodReq)
+    return bloodReq
+  }
+  catch(e){
+    console.log(e);
+  }
+}
