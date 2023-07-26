@@ -214,6 +214,33 @@ exports.loginUser = async (req, res) => {
     }
  }
 
+ exports.bloodRequest = async(req, res)=>{
+    await sequelize.sync();
+    const tokenId = req.data
+    const user = await service.findId(tokenId);
+    console.log(user.id+"nlksmlkdlk")
+    if(user.status == 'active'){
+        if(user.role == 'user'){
+            const reqData = {
+                type: "not",
+                units: req.body.units,
+                blood_group: req.body.blood_group,
+                status: "pending",
+                created_by: user.name,
+                UserId : req.body.units
+
+            }
+            const data =  await service.bloodRequest(reqData)
+            return response(res,"Your Request are under processing",data,"201")
+        }
+        else{
+            return response(res,"Permission denied",null,"403",true)
+        }
+    }
+    else{
+        return response(res,"Please login to request for blood",null,"403",true)
+    }
+ }
 
 
 
