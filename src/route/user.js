@@ -10,5 +10,7 @@ exports.deleteUserRoute = userController.deleteUser;
 
 exports.loginUserRoute = userController.loginUser;
 
+exports.bloodRequestRoute = userController.bloodRequest
+
 
 // exports.logoutUserRoute = userController.logoutUser;

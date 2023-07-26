@@ -17,7 +17,7 @@ router.delete('/delete',userMiddleware.verifyToken, userRoute.deleteUserRoute);
 
 router.patch('/login',userMiddleware.userLoginAuth, userRoute.loginUserRoute)
 
-
+router.post('/user/bloodRequest',userMiddleware.verifyToken, userRoute.bloodRequestRoute)
 // super user routes
 
 router.post('/register/superUser',userMiddleware.verifyToken, userMiddleware.data, superUserRoute.superUserRegisterRoute);
