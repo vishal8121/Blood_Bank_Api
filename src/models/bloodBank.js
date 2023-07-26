@@ -30,7 +30,8 @@ module.exports=(sequelize,DataTypes)=>{
        }
     },  {
       tableName: 'blood_banks',
-      paranoid: true
+      paranoid: true,
+      timestamps: true
     });
         
     return Blood_bank;

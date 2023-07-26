@@ -72,12 +72,18 @@ module.exports = (sequelize, DataTypes) => {
     updated_by:{
      type: DataTypes.STRING,
     },
+    deletedAt:{
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     updatedAt: DataTypes.DATE,
     createdAt: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'User',
     tableName: 'users',
+    paranoid: true,
+    timestamps: true,
   });
   return User;
 };

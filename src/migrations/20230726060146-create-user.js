@@ -72,7 +72,10 @@ module.exports = {
       },
       updatedAt:{
         type: Sequelize.STRING,
-      }
+      },
+      deletedAt:{
+        type: Sequelize.STRING,
+      },
     },{
       paranoid: true,
     });
