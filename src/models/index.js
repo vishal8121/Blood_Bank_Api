@@ -1,12 +1,8 @@
 'use strict';
 const  {Sequelize,DataTypes}  = require('sequelize');
 
-// Include database connection file
-// const sequelize = require("../config/connection")
-
 const fs = require('fs');
 const path = require('path');
-// const Sequelize = require('sequelize');
 const process = require('process');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
@@ -28,7 +24,7 @@ db.user = require('./user')(sequelize, DataTypes);
 db.bloodBank = require('./bloodBank')(sequelize, DataTypes);
 db.sequelize.sync();
 
-
+ 
 
 fs
   .readdirSync(__dirname)
