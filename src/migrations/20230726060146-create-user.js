@@ -76,8 +76,6 @@ module.exports = {
       deletedAt:{
         type: Sequelize.STRING,
       },
-    },{
-      paranoid: true,
     });
   },
   async down(queryInterface, Sequelize) {
