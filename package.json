@@ -12,7 +12,8 @@
   "devDependencies": {
     "eslint": "^8.44.0",
     "nodemon": "^3.0.1",
-    "prettier": "^3.0.0"
+    "prettier": "^3.0.0",
+    "sequelize-cli": "^6.6.1"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
