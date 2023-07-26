@@ -2,7 +2,7 @@ const service = require("../services/user");
 const bcrypt = require('bcrypt');
 const getAllUtils = require('../utils/user')
 const response = getAllUtils.sendResponse
-const db = require('../model/index');
+const db = require('../models/index');
 const sequelize = db.sequelize
 
 
