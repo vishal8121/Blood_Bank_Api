@@ -15,7 +15,7 @@ const User = (user) => {
   userSchema = Joi.object({
     name: Joi.string()
       .min(3)
-      .max(12)
+      .max(25) 
       .required(),
 
     email: Joi.string()
@@ -154,6 +154,7 @@ const sendEmail = (mailDetails) => {
     }
   });
 }
+
 
 
 
