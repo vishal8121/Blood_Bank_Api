@@ -23,7 +23,9 @@ db.sequelize = sequelize;
 db.user = require('./user')(sequelize, DataTypes);
 db.action = require('./action')(sequelize, DataTypes);
 db.bloodBank = require('./bloodBank')(sequelize, DataTypes);
-db.sequelize.sync();
+db.bloodInventory = require('./bloodInventory')(sequelize, DataTypes);
+db.bloodPrice = require('./bloodPrice')(sequelize, DataTypes); 
+db.sequelize.sync(); 
 
  
 
