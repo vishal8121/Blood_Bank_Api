@@ -4,6 +4,7 @@ const userMiddleware = require("../middleware/user");
 
 const userRoute = require('./user')
 const superUserRoute = require('./superUser')
+const bloodBankRoute = require('./bloodBank')
 
 // user routes
 
@@ -26,10 +27,10 @@ router.patch('/login',userMiddleware.userLoginAuth, superUserRoute.loginSuperUse
 
 router.get('/superuser/pendingRequests',userMiddleware.verifyToken, superUserRoute.bloodBankRequestRoute)
 
-router.patch('/superuser/acceptRequests',userMiddleware.verifyToken, superUserRoute.bloodBankApprovalRoute)
+router.patch('/superuser/processRequests',userMiddleware.verifyToken, superUserRoute.bloodBankApprovalRoute)
 
 // blood bank (admin) routes
-router.post('/register/bloodBank', userMiddleware.data, userRoute.userRegisterRoute);
+router.post('/register/bloodBank', bloodBankRoute.bloodBankRegisterRoute); 
 
 
 
