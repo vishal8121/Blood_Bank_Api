@@ -11,32 +11,30 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Blood_bank.hasOne(models.Action);
-      models.Action.belongsTo(Blood_bank);  
+      
     }
   } 
   Blood_bank.init({
     name: {
       type: DataTypes.STRING,
-      allowNull: false
-     
+      allowNull: false 
     },
-    phone_number:{
-     type: DataTypes.STRING,
-     allowNull: false
+    logo:{
+      type: DataTypes.STRING,
+      allowNull: true
     },
-    address:{
+    banner:{
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    license_no :{
      type: DataTypes.STRING,
-     allowNull: false
+     allowNull : false
     },
     status:{
      type: DataTypes.STRING,
      allowNull: false
-    },
-    account_status:{
-     type: DataTypes.STRING,
-     allowNull:false
-    },
+    },  
     created_by:{
      type: DataTypes.STRING,
      allowNull: false,

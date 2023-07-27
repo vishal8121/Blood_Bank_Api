@@ -11,8 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasOne(models.Action);
-      models.Action.belongsTo(User); 
+      
     }
   } 
   User.init({
@@ -44,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
      allowNull: false
     },
     role:{
-     type: DataTypes.ENUM("user","admin","Super_user"),
+     type: DataTypes.ENUM("user","blood_bank","super_user"),
      allowNull: false
     },
     phone_number:{
@@ -62,10 +61,6 @@ module.exports = (sequelize, DataTypes) => {
     status:{
      type: DataTypes.STRING,
      allowNull: false
-    },
-    account_status:{
-     type: DataTypes.STRING,
-     allowNull:false
     },
     created_by:{
      type: DataTypes.STRING,
