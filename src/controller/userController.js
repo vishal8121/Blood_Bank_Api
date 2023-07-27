@@ -63,7 +63,7 @@ exports.userRegister = async (req, res) => {
             created_by: req.body.name
         }
         const data = await service.addUser(userData);
-        return response(res,msg,data,"201")
+        return response(res,"User created succesfully",data,"201")
         }     
     
     else {
@@ -138,7 +138,12 @@ exports.loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await service.loginUser(email);
+        // console.log(user.dataValues.status = "active")
         if (user != null) {
+            if(user.dataValues.status = "active")
+            {
+                
+            }
             if (await bcrypt.compare(password, user.password)) {
                 // Passwords match
                 return response(res,"login successfully",user,"200");

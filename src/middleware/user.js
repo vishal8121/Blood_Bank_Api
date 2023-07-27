@@ -26,7 +26,7 @@ exports.verifyToken = (req, res, next) => {
             return response(res, "Failed to authenticate token", null, 500, true);
         }
     } else {
-        console.log(token);
+        console.log(token); 
         return response(res, "User not authenticated", null, 401, true);
     }
 };

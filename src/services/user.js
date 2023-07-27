@@ -152,6 +152,7 @@ exports.deleteUser = async (id) =>{
           email : email
         }
       });
+
       if(oldUser != null){
         await User.update({
           status : 'active'},
