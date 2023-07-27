@@ -1,0 +1,54 @@
+'use strict';
+const { request } = require('express');
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class bloodPrice extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+      bloodPrice.belongsTo(models.bloodBank,{
+        foreignKey:'bloodBank_id'
+      })
+    }
+  }
+  bloodPrice.init({
+    
+    blood_group: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },  
+    price_per_unit:{
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    bloodBank_id:{ 
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    status:{
+     type: DataTypes.STRING,
+     allowNull: false
+    },
+    created_by:{
+     type: DataTypes.STRING,
+     allowNull: false,
+    }, 
+    updated_by:{
+     type: DataTypes.STRING,
+    }
+  }, {
+    sequelize,
+    modelName: 'bloodPrice',
+    tableName: 'blood_prices',
+    paranoid: true,
+    timestamps: true,
+  });
+  return bloodPrice;
+};
+
