@@ -24,10 +24,10 @@ exports.userRegister = async (req, res) => {
     await sequelize.sync();
     const user = await service.checkEmail(req.body.email);
     if (user == null) {
-        if(req.body.role == 'Super_user'){ 
+        if(req.body.role == 'super_user'){ 
             const tokenId = req.data; 
             const dataId = await service.findId(tokenId);
-            if(dataId.role == 'Super_user'){
+            if(dataId.role == 'super_user'){
                 encryptedPassword = await bcrypt.hash(req.body.password, 10);
                 const userData = {
                     name: req.body.name,
@@ -47,20 +47,7 @@ exports.userRegister = async (req, res) => {
             }
             return response(res,"Permission Denied",null,"200",true);
         }
-         encryptedPassword = await bcrypt.hash(req.body.password, 10);
-          account_status = "activated";
-          msg = "User created successfully"
-         if(req.body.role == "admin"){
-            account_status = "deactivated"
-            msg = "Check your email !"
-            let mailDetails = {
-                from: 'vishalkumarwins@gmail.com',
-                to: req.body.email,
-                subject: 'Blood Bank Request',
-                text: "Your registration has been received and is currently being processed by our team!"
-            };
-             getAllUtils.sendEmail(mailDetails)
-        }
+            encryptedPassword = await bcrypt.hash(req.body.password, 10);
             const userData = {
             name: req.body.name,
             email: req.body.email,
@@ -72,7 +59,6 @@ exports.userRegister = async (req, res) => {
             phone_number: req.body.phone_number,
             address: req.body.address,
             last_donation_date: req.body.last_donation_date,
-            account_status: account_status,
             status: "inactive",
             created_by: req.body.name
         }
@@ -169,66 +155,24 @@ exports.loginUser = async (req, res) => {
     }
 };
 
- exports.pendingRequests = async(req, res) =>{
-    try{
-        const id = req.data
-        const data = await service.findId(id);
-        if(data.role == "Super_user"){
-            const requestedBanks = await service.getBloodBankReq();
-            // console.log(requestedBanks)
-                if (requestedBanks.length == 0) {
-                    return response(res,"No Data Found",null,"200");
-                }
-                return response(res,"All Pending Requests",requestedBanks,"200");
-        }
-            return response(res,"Permission denied",null,"403",true);
-    }
-    catch(e){
-        console.log("Error" + e);
-        return response(res,"Internal Server Error"+e,null,"500",true);
-    }
- }
-
- exports.acceptBankRequest = async(req, res)=>{
-    try{
-        const id = req.data
-        const data = await service.findId(id);
-        if(data.role == "Super_user"){
-       const data = await service.acceptRequest(req.body.id)
-       if(data>0){
-        let mailDetails = {
-            from: 'vishalkumarwins@gmail.com',
-            to: req.body.email,
-            subject: 'Request Approval',
-            text: "Your request has been approved."
-        };
-         getAllUtils.sendEmail(mailDetails)
-         return response(res,"check your email for confirmation",data,"200");
-       }
-    }
-    return response(res,"Permission denied",null,"403");
-    }
-    catch(e){
-        console.log("Error" + e);
-        return response(res,"Internal Server Error"+e,null,"500",true);
-    }
- }
+ 
 
  exports.bloodRequest = async(req, res)=>{
     await sequelize.sync();
     const tokenId = req.data
+    const bloodBank = await service.findName(req.body.bloodBank)
+      
     const user = await service.findId(tokenId);
     console.log(user.id+"nlksmlkdlk")
     if(user.status == 'active'){
         if(user.role == 'user'){
             const reqData = {
-                type: "not",
+                type: req.body.type,
                 units: req.body.units,
                 blood_group: req.body.blood_group,
                 status: "pending",
                 created_by: user.name,
-                UserId : req.body.units
-
+                user_id : user.id
             }
             const data =  await service.bloodRequest(reqData)
             return response(res,"Your Request are under processing",data,"201")
