@@ -1,5 +1,6 @@
 const db = require('../models')
 const User = db.user;
+const bloodBank = db.bloodBank;
 const Action = db.action;
 
 /****************************************************************************** 
@@ -185,7 +186,7 @@ exports.deleteUser = async (id) =>{
 
 exports.findName = async (name) => {
   try {
-      const user = await User.findOne({ 
+      const user = await bloodBank.findOne({ 
           where: {
               name: name
           }

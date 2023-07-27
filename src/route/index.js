@@ -29,7 +29,7 @@ router.get('/superuser/pendingRequests',userMiddleware.verifyToken, superUserRou
 
 router.patch('/superuser/processRequests',userMiddleware.verifyToken, superUserRoute.bloodBankApprovalRoute)
 
-// blood bank (admin) routes
+// blood bank routes
 router.post('/register/bloodBank', bloodBankRoute.bloodBankRegisterRoute); 
 
 
