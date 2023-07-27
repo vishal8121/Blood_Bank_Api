@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Blood_bank',
     tableName: 'blood_bank',
-    paranoid: true,
+    paranoid: true, 
     timestamps: true,
   }); 
   return Blood_bank;

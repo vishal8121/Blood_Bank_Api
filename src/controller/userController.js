@@ -161,7 +161,6 @@ exports.loginUser = async (req, res) => {
     await sequelize.sync();
     const tokenId = req.data
     const bloodBank = await service.findName(req.body.bloodBank)
-      
     const user = await service.findId(tokenId);
     console.log(user.id+"nlksmlkdlk")
     if(user.status == 'active'){
@@ -172,7 +171,8 @@ exports.loginUser = async (req, res) => {
                 blood_group: req.body.blood_group,
                 status: "pending",
                 created_by: user.name,
-                user_id : user.id
+                user_id : user.id,
+                bloodBank_id: bloodBank.id
             }
             const data =  await service.bloodRequest(reqData)
             return response(res,"Your Request are under processing",data,"201")
