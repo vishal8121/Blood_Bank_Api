@@ -1,9 +1,9 @@
 const userController = require("../controller/userController")
-
+const bloodBankController = require("../controller/bloodBankController")
 exports.superUserRegisterRoute = userController.userRegister;
 
 exports.loginSuperUserRoute = userController.loginUser;
 
-exports.bloodBankRequestRoute = userController.pendingRequests;  
+exports.bloodBankRequestRoute = bloodBankController.pendingRequests;  
 
-exports.bloodBankApprovalRoute = userController.acceptBankRequest
+exports.bloodBankApprovalRoute = bloodBankController.processBankRequest
