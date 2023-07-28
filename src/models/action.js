@@ -12,14 +12,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Action.belongsTo(models.User,{
-        foreignKey:'user_id'
-      })
-      Action.belongsTo(models.bloodBank,{ 
-        foreignKey:'bloodBank_id'
-      })
+      // Action.belongsTo(models.User,{
+      //   foreignKey:'user_id'
+      // })
+      // Action.belongsTo(models.bloodBank,{ 
+      //   foreignKey:'bloodBank_id'
+      // })
+      models.User.hasOne(Action);
+      Action.belongsTo(models.User);
+
+      models.bloodBank.hasOne(Action);
+      Action.belongsTo(models.bloodBank); 
+
     }
-  }
+  } 
   Action.init({
     
     type: {
@@ -30,14 +36,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    user_id:{
-      type: DataTypes.INTEGER,
-      allowNull: true
-    }, 
-    bloodBank_id:{ 
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
+    // user_id:{
+    //   type: DataTypes.INTEGER,
+    //   allowNull: true 
+    // }, 
+    // bloodBank_id:{ 
+    //   type: DataTypes.INTEGER,
+    //   allowNull: true
+    // },
     blood_group:{
      type: DataTypes.STRING,
      allowNull: true
