@@ -37,7 +37,7 @@ module.exports = {
        allowNull: false
       },
       role:{
-       type: Sequelize.ENUM("user","admin","Super_user"),
+       type: Sequelize.ENUM("user","blood_bank","super_user"),
        allowNull: false
       },
       phone_number:{
