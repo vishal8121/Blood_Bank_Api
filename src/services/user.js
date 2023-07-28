@@ -38,12 +38,6 @@ exports.getUser = async()=>{
 
 
 
-
-
-
-
-
-
 exports.getById = async(id)=>{
   try{
     const user = await User.findById({
@@ -97,24 +91,6 @@ exports.updateUser = async (id,data) =>{
   throw Error('Error :'+e);
  }
 }
-
-
-
-
-// exports.logout = async(id)=>{
-//   try{
-//     const user = await User.update({status:"inactive"},{
-//      where:{
-//        id : id
-//      }
-//     });
- 
-//     return user;
-//   }
-//   catch(e){
-//    throw Error('Error :'+e);
-//   }
-// }
 
 /****************************************************************************** 
 @params : id
@@ -189,6 +165,7 @@ exports.findName = async (name) => {
   try {
       const user = await bloodBank.findOne({ 
           where: {
+              status: 'approved',
               name: name
           }
       })
