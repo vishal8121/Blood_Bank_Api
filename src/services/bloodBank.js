@@ -7,11 +7,20 @@ const bloodBank = db.bloodBank;
 @Description : created addBloodBank function for create bloodbank and save blood bank data into database. if blood bank data save into database this function return blood bank data, if return error throw error
 
 *******************************************************************************/
-exports.addBloodBank = async(data,info)=>{
+exports.addBloodBankDetails = async(data)=>{
   try{
-    await bloodBankAdmin.create(info)
     const bloodB = await bloodBank.create(data)
     return bloodB
+  }
+  catch(e){
+    console.log(e);
+  }
+}
+
+exports.addBloodBankAdmin = async(data)=>{
+  try{
+    const admin = await bloodBankAdmin.create(data)
+    return admin
   }
   catch(e){
     console.log(e);
@@ -24,7 +33,8 @@ exports.checkEmail = async (email) => {
           where: {
               email: email
           }
-      })
+      });
+      // console.log(user)
       return user;
   } catch (e) {
       throw Error('Error:'+e)
@@ -46,6 +56,7 @@ exports.checkBank = async (name) => {
 
 exports.login = async(email)=>{
   try{
+    
        const user = await bloodBankAdmin.update(
         {status : "active"},
         {where : {email : email}
