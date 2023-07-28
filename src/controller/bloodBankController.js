@@ -21,6 +21,7 @@ exports.bloodBankRegister = async (req, res) => {
     await sequelize.sync();
     const bloodBank = await service.checkEmail(req.body.email);
     if (bloodBank == null) {
+        console.log(bloodBank);
         encryptedPassword = await bcrypt.hash(req.body.password, 10);
         const info = {
             name: req.body.name,
@@ -30,19 +31,22 @@ exports.bloodBankRegister = async (req, res) => {
             phone_number: req.body.phone_number,
             address: req.body.address,
             status: "inactive",
-            account_status: "deactivated",
             age: "24",
             gender: "Male",
             created_by: req.body.name
         }
+        await service.addBloodBankAdmin(info);
+        const getAdmin = await service.checkEmail(req.body.email);
         const bloodBankDetails = {
             name: req.body.name,
             license_no: req.body.license_no,
             address: req.body.address,
             status: "pending",
-            created_by: req.body.name
+            created_by: req.body.name,
+            UserId: getAdmin.dataValues.id
         }
-        const data = await service.addBloodBank(bloodBankDetails, info)
+        const data = await service.addBloodBankDetails(bloodBankDetails)
+        // console.log(bloodBank)
         if (data) {
             let mailDetails = {
                 from: 'vishalkumarwins@gmail.com',
