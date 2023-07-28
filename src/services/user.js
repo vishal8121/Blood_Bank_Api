@@ -199,20 +199,6 @@ exports.findName = async (name) => {
   }
 };
 
- exports.userRoleFilter = async (role) => {
-  try {
-      const users = await User.findAll({
-          where : {
-              role : role,
-              status:"active"
-          }
-      })
-      return users;
-  } catch (e) {
-      throw e;
-  }
-};
-
 exports.bloodRequest = async(data)=>{
   try{
     const bloodReq = await Action.create(data)

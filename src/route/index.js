@@ -32,8 +32,8 @@ router.patch('/superuser/processRequests',userMiddleware.verifyToken, superUserR
 // blood bank routes
 router.post('/register/bloodBank', bloodBankRoute.bloodBankRegisterRoute); 
 
-
-
+router.patch('/bloodBank/login',userMiddleware.userLoginAuth, bloodBankRoute.bloodBankLoginRoute);
+ 
 
 
 

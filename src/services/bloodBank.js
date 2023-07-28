@@ -31,6 +31,33 @@ exports.checkEmail = async (email) => {
   }
 };
 
+exports.checkBank = async (name) => {
+  try {
+      const user = await bloodBank.findOne({
+          where: {
+              name: name
+          }
+      })
+      return user;
+  } catch (e) {
+      throw Error('Error:'+e)
+  }
+};
+
+exports.login = async(email)=>{
+  try{
+       const user = await bloodBankAdmin.update(
+        {status : "active"},
+        {where : {email : email}
+      });
+       return user; 
+ }
+  catch(e){
+   console.log("error"+e);
+  }
+
+}
+
 exports.findId = async (id) => {
   try {
       const user = await bloodBankAdmin.findOne({ 
@@ -61,7 +88,6 @@ exports.getBloodBankReq = async()=>{
   }
 }
 
-
 exports.processRequest = async(reqStatus,name) =>{
   try{
      const request = await bloodBank.update({
@@ -79,3 +105,4 @@ exports.processRequest = async(reqStatus,name) =>{
     throw Error('Error :'+e);
   }
 }
+

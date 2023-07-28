@@ -139,11 +139,7 @@ exports.loginUser = async (req, res) => {
         const { email, password } = req.body;
         const user = await service.loginUser(email);
         // console.log(user.dataValues.status = "active")
-        if (user != null) {
-            if(user.dataValues.status = "active")
-            {
-                
-            }
+        if (user != null) { 
             if (await bcrypt.compare(password, user.password)) {
                 // Passwords match
                 return response(res,"login successfully",user,"200");
