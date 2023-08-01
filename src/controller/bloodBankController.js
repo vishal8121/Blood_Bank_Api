@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const getAllUtils = require('../utils/user')
 const response = getAllUtils.sendResponse
 const db = require('../models/index');
+const { exist } = require("joi");
 const sequelize = db.sequelize
 
 /***********************************************************************
@@ -159,3 +160,91 @@ exports.processBankRequest = async (req, res) => {
         return response(res, "Internal Server Error" + e, null, "500", true);
     }
 }
+
+exports.addBloodBankInventory = async(req, res)=>{
+    if(req.data){
+        const data = await service.findId(req.data);
+        const bloodBank = await service.checkBank(data.name)
+        const existInventory = await service.checkExistBankInventory(bloodBank.id)
+        const bloodUnits = {
+            a_positive_units: req.body.a_positive,
+            a_negative_units: req.body.a_negative,
+            b_positive_units: req.body.b_positive,
+            b_negative_units: req.body.b_negative,
+            ab_positive_units: req.body.ab_positive,
+            ab_negative_units: req.body.ab_negative,
+            o_positive_units: req.body.o_positive,
+            o_negative_units: req.body.o_negative,
+            BloodBankId: bloodBank.id,
+            created_by: data.name
+          }
+          const price = {
+            a_positive:req.body.a_positive_price,
+            a_negative:req.body.a_negative_price,
+            b_positive:req.body.b_positive_price,
+            b_negative:req.body.b_negative_price,
+            ab_positive:req.body.ab_positive_price,
+            ab_negative:req.body.ab_negative_price,
+            o_positive:req.body.o_positive_price,
+            o_negative:req.body.o_negative_price,
+            BloodBankId: bloodBank.id,
+            created_by: data.name
+          }
+        if(existInventory == null){
+            
+              const bloodUnit = await service.addBloodUnits(bloodUnits); 
+              const unitPrice = await service.addBloodUnitPrice(price);
+              if(bloodUnit){
+                return response(res, "You have Added Blood Details", {Data:{bloodUnit:bloodUnit, bloodPrice: unitPrice}}, "201");
+              }
+              else{
+                return response(res, "Please enter Blood details", null, "200",true);
+              }
+        }
+        
+    }else{
+        return response(res, "Permission Denied" + e, null, "500", true);
+    }
+}
+
+
+exports.updateBloodBankInventory = async(req,res)=>{
+    if(req.data){
+        const data = await service.findId(req.data);
+        const bloodBank = await service.checkBank(data.name)
+        const existInventory = await service.checkExistBankInventory(bloodBank.id)
+        if(existInventory){
+        const bloodUnits = {
+            a_positive_units: req.body.a_positive,
+            a_negative_units: req.body.a_negative,
+            b_positive_units: req.body.b_positive,
+            b_negative_units: req.body.b_negative,
+            ab_positive_units: req.body.ab_positive,
+            ab_negative_units: req.body.ab_negative,
+            o_positive_units: req.body.o_positive,
+            o_negative_units: req.body.o_negative,
+            BloodBankId: bloodBank.id,
+            updated_by: data.name
+          }
+          const price = {
+            a_positive:req.body.a_positive_price,
+            a_negative:req.body.a_negative_price,
+            b_positive:req.body.b_positive_price,
+            b_negative:req.body.b_negative_price,
+            ab_positive:req.body.ab_positive_price,
+            ab_negative:req.body.ab_negative_price,
+            o_positive:req.body.o_positive_price,
+            o_negative:req.body.o_negative_price,
+            BloodBankId: bloodBank.id,
+            updated_by: data.name
+          }
+        const bloodUnit = await service.updateInventory(bloodBank.id,bloodUnits); 
+        const unitPrice = await service.updatePrice(bloodBank.id,price);
+        if(bloodUnit){
+            return response(res, "You have updated details.", {Data:{bloodUnit:bloodUnit, bloodPrice: unitPrice}}, "200");
+        }
+        }
+        return response(res, "No Data Found.", null, "200",true);
+    }
+}
+
