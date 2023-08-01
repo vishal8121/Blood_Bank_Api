@@ -1,6 +1,8 @@
 const db = require('../models')
 const bloodBankAdmin = db.user;
 const bloodBank = db.bloodBank;
+const bloodInventory = db.bloodInventory;
+const bloodPrice = db.bloodPrice;
 
 /****************************************************************************** 
 @params : Data
@@ -13,7 +15,7 @@ exports.addBloodBankDetails = async(data)=>{
     return bloodB
   }
   catch(e){
-    console.log(e);
+    throw e;
   }
 }
 
@@ -53,6 +55,20 @@ exports.checkBank = async (name) => {
       throw Error('Error:'+e)
   }
 };
+
+exports.checkBankById = async (id) => {
+  try {
+      const user = await bloodBank.findOne({
+          where: {
+              id: id
+          }
+      })
+      return user;
+  } catch (e) {
+      throw Error('Error:'+e)
+  }
+};
+
 
 exports.login = async(email)=>{
   try{
@@ -117,3 +133,67 @@ exports.processRequest = async(reqStatus,name) =>{
   }
 }
 
+
+exports.addBloodUnits = async(units)=>{
+  try{
+    const addUnits = await bloodInventory.create(units);
+    return addUnits;
+  }
+  catch(err){
+    throw err;
+  }
+}
+
+exports.addBloodUnitPrice = async(unitPrice)=>{
+  try{
+    const bloodUnit = await bloodPrice.create(unitPrice);
+    return bloodUnit;
+  }
+  catch(err){
+    throw err;
+  }
+}
+
+exports.checkExistBankInventory = async(id)=>{
+  try{
+    const existInventory = await bloodInventory.findOne({ 
+      where: {
+          BloodBankId: id
+      }
+  });
+  return existInventory
+  }
+  catch(e){
+    throw e;
+  }
+}
+
+exports.updateInventory = async (id,data) =>{
+  try{
+    const inventory = await bloodInventory.update(data,{
+     where:{
+       BloodBankId : id
+     }
+    });
+ 
+    return inventory;
+  }
+  catch(e){
+   throw Error('Error :'+e);
+  }
+ }
+
+ exports.updatePrice = async (id,data) =>{
+  try{
+    const Price = await bloodPrice.update(data,{
+     where:{
+       BloodBankId : id
+     }
+    });
+ 
+    return Price;
+  }
+  catch(e){
+   throw Error('Error :'+e);
+  }
+ }
