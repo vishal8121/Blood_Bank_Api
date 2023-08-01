@@ -12,14 +12,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      bloodInventory.belongsTo(models.bloodBank,{
-        foreignKey:'bloodBank_id'
-      })
+      models.bloodBank.hasOne(bloodInventory);
+      bloodInventory.belongsTo(models.bloodBank)
     }
   }
   bloodInventory.init({
     
-    a_positive_units: {
+    a_positive_units: { 
       type: DataTypes.INTEGER,
       allowNull: false
     }, 
@@ -51,26 +50,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-    bloodBank_id:{ 
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    status:{
-     type: DataTypes.STRING,
-     allowNull: false
-    },
     created_by:{
      type: DataTypes.STRING,
      allowNull: false,
     },
     updated_by:{
-     type: DataTypes.STRING,
+     type: DataTypes.STRING
     }
   }, {
     sequelize,
     modelName: 'bloodInventory',
     tableName: 'blood_inventory',
-    paranoid: true,
+    paranoid: true, 
     timestamps: true,
   });
   return bloodInventory;
