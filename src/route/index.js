@@ -10,8 +10,8 @@ const bloodBankRoute = require('./bloodBank')
 
 router.post('/register/user', userMiddleware.data, userRoute.userRegisterRoute);
 
-router.get('/users',userRoute.allUsersRoute);
-
+// router.get('/users',userRoute.allUsersRoute);
+ 
 router.put('/updateUser',userMiddleware.verifyToken,userMiddleware.updateData,userRoute.updateUserRoute);
 
 router.delete('/delete',userMiddleware.verifyToken, userRoute.deleteUserRoute);
@@ -33,7 +33,8 @@ router.patch('/superuser/processRequests',userMiddleware.verifyToken, superUserR
 router.post('/register/bloodBank', bloodBankRoute.bloodBankRegisterRoute); 
 
 router.patch('/bloodBank/login',userMiddleware.userLoginAuth, bloodBankRoute.bloodBankLoginRoute);
- 
+
+router.post('/bloodBank/inventory',userMiddleware.verifyToken, bloodBankRoute.bloodBankInventoryRoute)
 
 
 
