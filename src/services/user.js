@@ -14,8 +14,8 @@ exports.addUser = async(userData)=>{
     console.log(user)
     return user
   }
-  catch(e){
-    console.log(e);
+  catch(e){ 
+    throw e;
   }
 }
 
@@ -32,7 +32,7 @@ exports.getUser = async()=>{
     return user
   }
   catch(e){
-    console.log(e);
+    throw e;
   }
 }
 
@@ -46,7 +46,7 @@ exports.getById = async(id)=>{
     return user;
   }
   catch(e){
-    console.log(e); 
+    throw e; 
   }
 }
 
@@ -165,7 +165,7 @@ exports.findName = async (name) => {
   try {
       const user = await bloodBank.findOne({ 
           where: {
-              status: 'approved',
+              status: 'Approved',
               name: name
           }
       })
@@ -186,3 +186,4 @@ exports.bloodRequest = async(data)=>{
     console.log(e);
   }
 }
+
