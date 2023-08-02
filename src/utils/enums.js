@@ -16,7 +16,9 @@ const messages = new Enum({
      'login':"Please login",
      'not_exist': "Not Exist",
      'add_data_success': "Data added successfully",
-     'enter_data': "Please Enter details"
+     'enter_data': "Please Enter details",
+     'blood_not_available':"Requested blood not available",
+     'request_approved':"Your request has been approved. Now you have to make payment for your requested blood" 
     })
 
 
