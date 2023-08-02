@@ -36,7 +36,7 @@ router.patch('/bloodBank/login',userMiddleware.userLoginAuth, bloodBankRoute.blo
 
 router.post('/bloodBank/inventory',userMiddleware.verifyToken, bloodBankRoute.bloodBankInventoryRoute)
 
-
+router.put('/bloodBank/updateInventory',userMiddleware.verifyToken, bloodBankRoute.bloodBankUpdateInventoryRoute)
 
 
 module.exports = router

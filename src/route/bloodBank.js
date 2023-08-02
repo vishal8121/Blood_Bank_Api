@@ -5,3 +5,5 @@ exports.bloodBankRegisterRoute = bloodBankController.bloodBankRegister
 exports.bloodBankLoginRoute = bloodBankController.login
 
 exports.bloodBankInventoryRoute = bloodBankController.addBloodBankInventory
+
+exports.bloodBankUpdateInventoryRoute = bloodBankController.updateBloodBankInventory
