@@ -4,7 +4,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Action extends Model {
+  class Blood_Request extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -18,15 +18,15 @@ module.exports = (sequelize, DataTypes) => {
       // Action.belongsTo(models.bloodBank,{ 
       //   foreignKey:'bloodBank_id'
       // })
-      models.User.hasOne(Action);
-      Action.belongsTo(models.User);
+      models.User.hasOne(Blood_Request);
+      Blood_Request.belongsTo(models.User);
 
-      models.bloodBank.hasOne(Action);
-      Action.belongsTo(models.bloodBank); 
+      models.bloodBank.hasOne(Blood_Request);
+      Blood_Request.belongsTo(models.bloodBank); 
 
     }
   } 
-  Action.init({
+  Blood_Request.init({
     
     type: {
       type: DataTypes.ENUM('request', 'donation'),
@@ -36,14 +36,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    // user_id:{
-    //   type: DataTypes.INTEGER,
-    //   allowNull: true 
-    // }, 
-    // bloodBank_id:{ 
-    //   type: DataTypes.INTEGER,
-    //   allowNull: true
-    // },
     blood_group:{
      type: DataTypes.STRING,
      allowNull: true
@@ -61,11 +53,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'Action',
-    tableName: 'action',
+    modelName: 'Blood_Request',
+    tableName: 'blood_request',
     paranoid: true,
     timestamps: true,
   });
-  return Action;
+  return Blood_Request;
 };
 
