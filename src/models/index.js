@@ -14,7 +14,7 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
+} 
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
@@ -25,9 +25,10 @@ db.bloodRequest = require('./bloodRequest')(sequelize, DataTypes);
 db.bloodBank = require('./bloodBank')(sequelize, DataTypes);
 db.bloodInventory = require('./bloodInventory')(sequelize, DataTypes);
 db.bloodPrice = require('./bloodPrice')(sequelize, DataTypes); 
-db.sequelize.sync();  
- 
- 
+db.payments = require('./paymentDetails')(sequelize, DataTypes);
+db.sequelize.sync();    
+  
+  
 
 fs
   .readdirSync(__dirname)
