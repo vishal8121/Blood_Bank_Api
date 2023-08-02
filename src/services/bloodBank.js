@@ -3,6 +3,8 @@ const bloodBankAdmin = db.user;
 const bloodBank = db.bloodBank;
 const bloodInventory = db.bloodInventory;
 const bloodPrice = db.bloodPrice;
+const bloodRequest = db.bloodRequest;
+const pay = db.payments;
 
 /****************************************************************************** 
 @params : Data
@@ -200,7 +202,6 @@ exports.updateInventory = async (id,data) =>{
        BloodBankId : id
      }
     });
- 
     return Price;
   }
   catch(e){
@@ -208,3 +209,44 @@ exports.updateInventory = async (id,data) =>{
   }
  }
 
+ exports.createPayment = async(data) =>{
+  try{
+   const payment = await pay.create(data);
+   return payment
+  }
+  catch(e){
+    throw Error('Error :'+e);
+  }
+ }
+
+ exports.pendingBloodRequest = async()=>{
+  try{
+     const allPendingRequest = await bloodRequest.findAll({
+      where:{
+        status: 'pending'
+      }
+     })
+     return allPendingRequest;
+  }
+  catch(e){
+      throw e;
+  }
+}
+
+ exports.acceptBloodRequest = async(id)=>{
+  try{
+    const request = await bloodRequest.update({
+      status : "Approved"
+     },
+     {
+      where : {
+       id : id
+      }
+     }
+     )
+     return request
+  }
+  catch(e){
+    throw e;
+  }
+ } 
