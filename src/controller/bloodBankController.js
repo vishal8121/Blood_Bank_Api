@@ -193,7 +193,6 @@ exports.addBloodBankInventory = async(req, res)=>{
             created_by: data.name
           }
         if(existInventory == null){
-            
               const bloodUnit = await service.addBloodUnits(bloodUnits); 
               const unitPrice = await service.addBloodUnitPrice(price);
               if(bloodUnit){
@@ -203,7 +202,7 @@ exports.addBloodBankInventory = async(req, res)=>{
                 return response(res,MESSAGE.enter_data.value, null, "200",true);
               }
         }
-        
+        return response(res,MESSAGE.all_data.value, existInventory, "200",true);
     }else{
         return response(res,MESSAGE.permission_denied.value + e, null, "500", true);
     }
@@ -243,7 +242,10 @@ exports.updateBloodBankInventory = async(req,res)=>{
         const bloodUnit = await service.updateInventory(bloodBank.id,bloodUnits); 
         const unitPrice = await service.updatePrice(bloodBank.id,price);
         if(bloodUnit){
-            return response(res,MESSAGE.update_success.value, {Data:{bloodUnit:bloodUnit, bloodPrice: unitPrice}}, "200");
+            return response(res,MESSAGE.update_success.value, {
+             units:bloodUnits,
+             price: price    
+            }, "200");
         }
         }
         return response(res,MESSAGE.data_not_found.value, null, "200",true);
