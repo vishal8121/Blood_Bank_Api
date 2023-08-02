@@ -2,6 +2,8 @@ const db = require('../models')
 const User = db.user;
 const bloodBank = db.bloodBank;
 const Blood_Request = db.bloodRequest;
+const pay = db.payments;
+
 
 /****************************************************************************** 
 @params : userData
@@ -184,6 +186,21 @@ exports.bloodRequest = async(data)=>{
   }
   catch(e){
     console.log(e);
+    throw e;
+  }
+}
+
+exports.processPayment = async(id,data)=>{
+  try{
+  const payment = await pay.update(data,{
+   where:{
+    id:id
+   }
+  })
+  return payment
+  }
+  catch(e){
+    throw e;
   }
 }
 
