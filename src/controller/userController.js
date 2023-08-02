@@ -1,4 +1,5 @@
 const service = require("../services/user");
+const BloodBank = require("../services/bloodBank");
 const bcrypt = require('bcrypt');
 const getAllUtils = require('../utils/user')
 const MESSAGE = require('../utils/enums');
@@ -165,29 +166,27 @@ exports.loginUser = async (req, res) => {
     const bloodBank = await service.findName(req.body.bloodBank)
     if(bloodBank){
         const user = await service.findId(tokenId);
-        // console.log(user.id+"nlksmlkdlk")
-        if(user.status == 'active'){
-            if(user.role == 'user'){
-                const reqData = {
-                    type: req.body.type,
-                    units: req.body.units,
-                    blood_group: req.body.blood_group,
-                    status: "pending",
-                    created_by: user.name,
-                    UserId : user.id,
-                    BloodBankId: bloodBank.id
-                }
+        const reqData = {
+            type: 'request',
+            units: req.body.units,
+            blood_group: req.body.blood_group,
+            status: "pending",
+            created_by: user.name,
+            UserId : user.id,
+            BloodBankId: bloodBank.id
+        }
+        if(user.status == 'active' && user.role == 'user'){
+                const checkBloodGroup = await BloodBank.findBloodGroup(req.body.blood_group)
+                if(checkBloodGroup[req.body.blood_group ]>0){
                 const data =  await service.bloodRequest(reqData)
                 return response(res,MESSAGE.under_process.value,data,"201")
+                }
+                return response(res,MESSAGE.blood_not_available.value,null,"200",true)
             }
             else{
                 return response(res,MESSAGE.permission_denied.value,null,"403",true)
             }
         }
-        else{
-            return response(res,MESSAGE.login.value,null,"403",true)
-        }
-    }
     else{
         return response(res,MESSAGE.not_exist.value,null,"403",true)
     }
