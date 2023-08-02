@@ -5,6 +5,8 @@ const response = getAllUtils.sendResponse
 const db = require('../models/index');
 const { exist } = require("joi");
 const sequelize = db.sequelize
+const MESSAGE = require('../utils/enums');
+
 
 /***********************************************************************
  
@@ -57,10 +59,10 @@ exports.bloodBankRegister = async (req, res) => {
             };
             getAllUtils.sendEmail(mailDetails)
         }
-        return response(res, "Your request are under processing. Check your email...", data, "201")
+        return response(res,MESSAGE.under_process.value, data, "201")
     }
     else {
-        return response(res, "Blood Bank not created", null, 200, "Blood Bank already registered")
+        return response(res,MESSAGE.not_created.value, null, 200, "Blood Bank already registered")
     }
 }
 
@@ -82,13 +84,13 @@ exports.login = async (req, res) => {
         const { email, password } = req.body;
         const user = await service.checkEmail(email)
         if (user == null) {
-            return response(res, "User does not exist", null, "403", true);
+            return response(res,MESSAGE.not_registered.value, null, "403", true);
         }
         else {
             const bloodBank = await service.checkBank(user.dataValues.name)
             // console.log(bloodBank.status)
             if (bloodBank.status == "pending") {
-                return response(res, "Your request are under processing...", null, "200");
+                return response(res,MESSAGE.under_process.value, null, "200");
             }
             else {
                 const data = await service.checkEmail(email)
@@ -97,10 +99,10 @@ exports.login = async (req, res) => {
                     await service.login(email)
                     if (await bcrypt.compare(password, data.password)) {
                         // Passwords match
-                        return response(res, "login successfully", user, "200");
+                        return response(res,MESSAGE.login_success.value, user, "200");
                     } else {
                         // Passwords do not match
-                        return response(res, "password incorrect", null, "403", true);
+                        return response(res,MESSAGE.password_incorrect.value, null, "403", true);
                     }
                 }
             }
@@ -153,7 +155,7 @@ exports.processBankRequest = async (req, res) => {
                 return response(res, "check your email for confirmation", data, "200");
             }
         }
-        return response(res, "Permission denied", null, "403");
+        return response(res,MESSAGE.permission_denied.value, null, "403");
     }
     catch (e) {
         console.log("Error" + e);
@@ -195,15 +197,15 @@ exports.addBloodBankInventory = async(req, res)=>{
               const bloodUnit = await service.addBloodUnits(bloodUnits); 
               const unitPrice = await service.addBloodUnitPrice(price);
               if(bloodUnit){
-                return response(res, "You have Added Blood Details", {Data:{bloodUnit:bloodUnit, bloodPrice: unitPrice}}, "201");
+                return response(res,MESSAGE.add_data_success.value, {Data:{bloodUnit:bloodUnit, bloodPrice: unitPrice}}, "201");
               }
               else{
-                return response(res, "Please enter Blood details", null, "200",true);
+                return response(res,MESSAGE.enter_data.value, null, "200",true);
               }
         }
         
     }else{
-        return response(res, "Permission Denied" + e, null, "500", true);
+        return response(res,MESSAGE.permission_denied.value + e, null, "500", true);
     }
 }
 
@@ -241,10 +243,10 @@ exports.updateBloodBankInventory = async(req,res)=>{
         const bloodUnit = await service.updateInventory(bloodBank.id,bloodUnits); 
         const unitPrice = await service.updatePrice(bloodBank.id,price);
         if(bloodUnit){
-            return response(res, "You have updated details.", {Data:{bloodUnit:bloodUnit, bloodPrice: unitPrice}}, "200");
+            return response(res,MESSAGE.update_success.value, {Data:{bloodUnit:bloodUnit, bloodPrice: unitPrice}}, "200");
         }
         }
-        return response(res, "No Data Found.", null, "200",true);
+        return response(res,MESSAGE.data_not_found.value, null, "200",true);
     }
 }
 
