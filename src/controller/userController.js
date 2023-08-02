@@ -1,6 +1,7 @@
 const service = require("../services/user");
 const bcrypt = require('bcrypt');
 const getAllUtils = require('../utils/user')
+const MESSAGE = require('../utils/enums');
 const response = getAllUtils.sendResponse
 const db = require('../models/index');
 const sequelize = db.sequelize
@@ -43,9 +44,9 @@ exports.userRegister = async (req, res) => {
                     created_by: dataId.name
                 }
                 const data = await service.addUser(userData);
-                return response(res,"Super User created successfully",data,"201")
+                return response(res,MESSAGE.registered.value,data,"201")
             }
-            return response(res,"Permission Denied",null,"200",true);
+            return response(res,MESSAGE.permission_denied.value,null,"200",true);
         }
             encryptedPassword = await bcrypt.hash(req.body.password, 10);
             const userData = {
@@ -63,11 +64,11 @@ exports.userRegister = async (req, res) => {
             created_by: req.body.name
         }
         const data = await service.addUser(userData);
-        return response(res,"User created succesfully",data,"201")
+        return response(res,MESSAGE.registered.value,data,"201")
         }     
     
     else {
-        return response(res,"User not created",null,200,"User email already registered")
+        return response(res,MESSAGE.not_registered.value,data,null,200,"User email already registered")
     }
 }
 
@@ -81,9 +82,9 @@ exports.userRegister = async (req, res) => {
 exports.getUsers = (async (req, res) => {
     const users = await service.getUser()
     if (users.length == 0) {
-        return response(res,"No Data Found",null,"200");
+        return response(res,MESSAGE.data_not_found.value,data,null,"200");
     }
-    return response(res,"All Users Data",users,"200");
+    return response(res,MESSAGE.all_data.value,data,users,"200");
 });
 
 
@@ -104,7 +105,7 @@ exports.updateUser = async (req, res) => {
     const data = req.body;
     data.updated_by = dataId.name;
     await service.updateUser(dataId.id, data);
-    return response(res,"User updated successfully",data,"200");
+    return response(res,MESSAGE.update_success.value,data,"200");
 }
 
 
@@ -120,7 +121,7 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
     id = req.data;
     await service.deleteUser(id);
-    return response(res,"User deleted successfully",null,"200");
+    return response(res,MESSAGE.account_deleted.value,null,"200");
 }
 
 
@@ -142,14 +143,14 @@ exports.loginUser = async (req, res) => {
         if (user != null) { 
             if (await bcrypt.compare(password, user.password)) {
                 // Passwords match
-                return response(res,"login successfully",user,"200");
+                return response(res,MESSAGE.login_success.value,user,"200");
             } else {
                 // Passwords do not match
-               return response(res,"password incorrect",null,"403",true);
+               return response(res,MESSAGE.password_incorrect.value,null,"403",true);
             }
         }
         // User not found
-        return response(res,"User does not exist",null,"403",true);
+        return response(res,MESSAGE.not_registered.value,null,"403",true);
     } catch (e) {
         console.log("Error" + e);
         return response(res,"Internal Server Error"+e,null,"500",true);
@@ -177,18 +178,18 @@ exports.loginUser = async (req, res) => {
                     BloodBankId: bloodBank.id
                 }
                 const data =  await service.bloodRequest(reqData)
-                return response(res,"Your Request are under processing",data,"201")
+                return response(res,MESSAGE.under_process.value,data,"201")
             }
             else{
-                return response(res,"Permission denied",null,"403",true)
+                return response(res,MESSAGE.permission_denied.value,null,"403",true)
             }
         }
         else{
-            return response(res,"Please login to request for blood",null,"403",true)
+            return response(res,MESSAGE.login.value,null,"403",true)
         }
     }
     else{
-        return response(res,"Blood Bank not exist",null,"403",true)
+        return response(res,MESSAGE.not_exist.value,null,"403",true)
     }
     
  }
