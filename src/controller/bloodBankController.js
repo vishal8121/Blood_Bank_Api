@@ -169,14 +169,14 @@ exports.addBloodBankInventory = async(req, res)=>{
         const bloodBank = await service.checkBank(data.name)
         const existInventory = await service.checkExistBankInventory(bloodBank.id)
         const bloodUnits = {
-            a_positive_units: req.body.a_positive,
-            a_negative_units: req.body.a_negative,
-            b_positive_units: req.body.b_positive,
-            b_negative_units: req.body.b_negative,
-            ab_positive_units: req.body.ab_positive,
-            ab_negative_units: req.body.ab_negative,
-            o_positive_units: req.body.o_positive,
-            o_negative_units: req.body.o_negative,
+            a_positive: req.body.a_positive,
+            a_negative: req.body.a_negative,
+            b_positive: req.body.b_positive,
+            b_negative: req.body.b_negative,
+            ab_positive: req.body.ab_positive,
+            ab_negative: req.body.ab_negative,
+            o_positive: req.body.o_positive,
+            o_negative: req.body.o_negative,
             BloodBankId: bloodBank.id,
             created_by: data.name
           }
