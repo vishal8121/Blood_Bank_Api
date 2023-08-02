@@ -1,7 +1,7 @@
 const db = require('../models')
 const User = db.user;
 const bloodBank = db.bloodBank;
-const Action = db.action;
+const Blood_Request = db.bloodRequest;
 
 /****************************************************************************** 
 @params : userData
@@ -178,7 +178,7 @@ exports.findName = async (name) => {
 
 exports.bloodRequest = async(data)=>{
   try{
-    const bloodReq = await Action.create(data)
+    const bloodReq = await Blood_Request.create(data)
     console.log(bloodReq)
     return bloodReq
   }

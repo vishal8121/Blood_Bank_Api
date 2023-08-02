@@ -21,7 +21,7 @@ db.sequelize = sequelize;
 
 // Include user model file
 db.user = require('./user')(sequelize, DataTypes);
-db.action = require('./action')(sequelize, DataTypes);
+db.bloodRequest = require('./bloodRequest')(sequelize, DataTypes);
 db.bloodBank = require('./bloodBank')(sequelize, DataTypes);
 db.bloodInventory = require('./bloodInventory')(sequelize, DataTypes);
 db.bloodPrice = require('./bloodPrice')(sequelize, DataTypes); 
