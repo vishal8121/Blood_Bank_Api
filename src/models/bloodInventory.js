@@ -18,35 +18,35 @@ module.exports = (sequelize, DataTypes) => {
   }
   bloodInventory.init({
     
-    a_positive_units: { 
+    a_positive: { 
       type: DataTypes.INTEGER,
       allowNull: false
     }, 
-    a_negative_units: {
+    a_negative: {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      b_positive_units: {
+      b_positive: {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      b_negative_units: {
+      b_negative: {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      ab_positive_units: {
+      ab_positive: {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      ab_negative_units: {
+      ab_negative: {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      o_positive_units: { 
+      o_positive: { 
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      o_negative_units: {
+      o_negative: {
         type: DataTypes.INTEGER,
         allowNull: false
       },
