@@ -179,7 +179,15 @@ exports.loginUser = async (req, res) => {
                 const checkBloodGroup = await BloodBank.findBloodGroup(req.body.blood_group)
                 if(checkBloodGroup[req.body.blood_group ]>0){
                 const data =  await service.bloodRequest(reqData)
-                return response(res,MESSAGE.under_process.value,data,"201")
+                if(data){
+                    const paymentData ={
+                        status: "pending",
+                        BloodRequestId: data.id,
+                        created_by: bloodBank.name
+                    }
+                    const createPayment = await BloodBank.createPayment(paymentData)
+                  return response(res,MESSAGE.under_process.value,reqData,"201")
+                }
                 }
                 return response(res,MESSAGE.blood_not_available.value,null,"200",true)
             }
@@ -189,12 +197,15 @@ exports.loginUser = async (req, res) => {
         }
     else{
         return response(res,MESSAGE.not_exist.value,null,"403",true)
-    }
-    
+    }  
  }
 
 
+ exports.makePayment = async(req,res) =>{
+  
 
+
+ }
 
 
 
