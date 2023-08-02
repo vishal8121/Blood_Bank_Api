@@ -12,5 +12,7 @@ exports.loginUserRoute = userController.loginUser;
 
 exports.bloodRequestRoute = userController.bloodRequest
 
+exports.makePaymentRoute = userController.makePayment
+
 
 // exports.logoutUserRoute = userController.logoutUser;
