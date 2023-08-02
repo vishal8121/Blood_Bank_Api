@@ -216,14 +216,14 @@ exports.updateBloodBankInventory = async(req,res)=>{
         const existInventory = await service.checkExistBankInventory(bloodBank.id)
         if(existInventory){
         const bloodUnits = {
-            a_positive_units: req.body.a_positive,
-            a_negative_units: req.body.a_negative,
-            b_positive_units: req.body.b_positive,
-            b_negative_units: req.body.b_negative,
-            ab_positive_units: req.body.ab_positive,
-            ab_negative_units: req.body.ab_negative,
-            o_positive_units: req.body.o_positive,
-            o_negative_units: req.body.o_negative,
+            a_positive: req.body.a_positive,
+            a_negative: req.body.a_negative,
+            b_positive: req.body.b_positive,
+            b_negative: req.body.b_negative,
+            ab_positive: req.body.ab_positive,
+            ab_negative: req.body.ab_negative,
+            o_positive: req.body.o_positive,
+            o_negative: req.body.o_negative,
             BloodBankId: bloodBank.id,
             updated_by: data.name
           }
@@ -252,3 +252,23 @@ exports.updateBloodBankInventory = async(req,res)=>{
     }
 }
 
+exports.getPendingBloodRequest = (async (req, res) => {
+    const data = await service.findId(req.data);
+    if(data.role == 'blood_bank' && data.status == 'active'){
+        const allRequest = await service.pendingBloodRequest()
+        if (allRequest.length == 0) {
+            return response(res,MESSAGE.data_not_found.value,null,"200");
+        }
+        return response(res,MESSAGE.all_data.value,allRequest,"200");
+    }
+    return response(res,MESSAGE.permission_denied.value, null, "403");
+});
+
+exports.approveBloodRequest = async (req,res)=>{
+    const data = await service.findId(req.data);
+    if(data.role == 'blood_bank' && data.status == 'active'){
+        const approved = await service.acceptBloodRequest(req.body.id)
+        return response(res,MESSAGE.request_approved.value,approved,"200");
+    }
+    return response(res,MESSAGE.permission_denied.value, null, "403")
+}
