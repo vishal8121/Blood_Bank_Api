@@ -19,6 +19,8 @@ router.delete('/delete',userMiddleware.verifyToken, userRoute.deleteUserRoute);
 router.patch('/login',userMiddleware.userLoginAuth, userRoute.loginUserRoute)
 
 router.post('/user/bloodRequest',userMiddleware.verifyToken, userRoute.bloodRequestRoute)
+
+router.put('/user/bloodRequest/processPayment',userMiddleware.verifyToken, userRoute.makePaymentRoute)
 // super user routes
 
 router.post('/register/superUser',userMiddleware.verifyToken, userMiddleware.data, superUserRoute.superUserRegisterRoute);
@@ -38,6 +40,9 @@ router.post('/bloodBank/inventory',userMiddleware.verifyToken, bloodBankRoute.bl
 
 router.put('/bloodBank/updateInventory',userMiddleware.verifyToken, bloodBankRoute.bloodBankUpdateInventoryRoute)
 
+router.get('/bloodBank/bloodRequest',userMiddleware.verifyToken, bloodBankRoute.checkPendingBloodRequestRoute)
+
+router.patch('/bloodBank/processRequest',userMiddleware.verifyToken, bloodBankRoute.approveBloodRequestRoute)
 
 module.exports = router
 
