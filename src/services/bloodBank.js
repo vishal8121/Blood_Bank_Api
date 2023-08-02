@@ -168,6 +168,16 @@ exports.checkExistBankInventory = async(id)=>{
   }
 }
 
+exports.findBloodGroup = async(name)=>{
+try{
+ const bloodGroup = await bloodInventory.findOne({name})
+ return bloodGroup
+}
+catch(e){
+  throw e;
+}
+}
+
 exports.updateInventory = async (id,data) =>{
   try{
     const inventory = await bloodInventory.update(data,{
@@ -197,3 +207,4 @@ exports.updateInventory = async (id,data) =>{
    throw Error('Error :'+e);
   }
  }
+
