@@ -17,7 +17,7 @@ module.exports = {
         password: encryptedPassword,
         phone_number: '9816898121',
         address: 'Chandigarh',
-        role: 'Super_user',
+        role: 'super_user',
         status: 'inactive',
         created_by: 'Super User',
         createdAt: new Date(),
