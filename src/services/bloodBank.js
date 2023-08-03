@@ -281,7 +281,7 @@ exports.updateInventory = async (id,data) =>{
   }
  }
 
- exports.findBloodPrice = async(id,blood)=>{
+ exports.findBloodPrice = async(id)=>{
   try{
    const bloodGroup = await bloodPrice.findByPk(id,
   {include: bloodBank})
@@ -290,4 +290,8 @@ exports.updateInventory = async (id,data) =>{
   catch(e){
     throw e;
   }
+ }
+
+ exports.bloodRequestIncre = async()=>{
+
  }

@@ -20,7 +20,8 @@ const messages = new Enum({
      'blood_not_available':"Requested blood not available",
      'request_approved':"Your request has been approved. Now you have to make payment for your requested blood",
      'insufficient_balance':"You have entered insufficient amount blood",
-     'payment_success':"Payment Completed" 
+     'payment_success':"Payment Completed",
+     'payment_failed':"Payment Failed", 
     })
 
 

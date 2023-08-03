@@ -207,7 +207,7 @@ exports.loginUser = async (req, res) => {
     const bloodReq = await BloodBank.findBloodRequest(req.body.requestId)
     if(user.status == 'active' && user.role == 'user'){
         if(bloodReq.type == 'request' && bloodReq.status == 'Approved'){
-        const price = await BloodBank.findBloodPrice(bloodReq.BloodBankId,bloodReq.blood_group)
+        const price = await BloodBank.findBloodPrice(bloodReq.BloodBankId)
         if(price[bloodReq.blood_group]*bloodReq.units == req.body.price){
             const info={
                 "transaction_id": "TX4567891234567", 
@@ -219,6 +219,7 @@ exports.loginUser = async (req, res) => {
             console.log(paymentComplete)
             return response(res,MESSAGE.payment_success.value,info,"200") 
           }
+          return response(res,MESSAGE.payment_failed.value,null,"200",true) 
         }
    return response(res,MESSAGE.insufficient_balance.value,null,"200") 
         }
@@ -231,12 +232,6 @@ exports.loginUser = async (req, res) => {
    }
 
  }
-
-
-
-
-
-
 
 // exports.logoutUser = async(req, res) =>{
 //     try{
