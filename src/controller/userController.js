@@ -208,15 +208,17 @@ exports.loginUser = async (req, res) => {
     if(user.status == 'active' && user.role == 'user'){
         if(bloodReq.type == 'request' && bloodReq.status == 'Approved'){
         const price = await BloodBank.findBloodPrice(bloodReq.BloodBankId,bloodReq.blood_group)
-        console.log(price.bloo+"90808998")
-        if(price == req.body.price){
+        if(price[bloodReq.blood_group]*bloodReq.units == req.body.price){
             const info={
                 "transaction_id": "TX4567891234567", 
                 "payment_method": req.body.payment_method,
                 "status": "Completed",
              }
-             await BloodBank.makePayment(bloodReq.id, info)
-        return response(res,MESSAGE.payment_success.value,info,"200") 
+          const paymentComplete =  await BloodBank.makePayment(bloodReq.id, info)
+          if(paymentComplete){
+            console.log(paymentComplete)
+            return response(res,MESSAGE.payment_success.value,info,"200") 
+          }
         }
    return response(res,MESSAGE.insufficient_balance.value,null,"200") 
         }

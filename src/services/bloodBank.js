@@ -267,9 +267,9 @@ exports.updateInventory = async (id,data) =>{
 
  exports.makePayment = async(id,data)=>{
   try{
-    const payment = await pay.update({
-      data
-    },{ 
+    const payment = await pay.update(
+      data,
+    { 
       where: {
           BloodRequestId: id
       }
@@ -283,11 +283,8 @@ exports.updateInventory = async (id,data) =>{
 
  exports.findBloodPrice = async(id,blood)=>{
   try{
-   const bloodGroup = await bloodPrice.findOne({blood},{
-    where:{
-      BloodRequestId:id
-    }
-   })
+   const bloodGroup = await bloodPrice.findByPk(id,
+  {include: bloodBank})
    return bloodGroup;
   }
   catch(e){
