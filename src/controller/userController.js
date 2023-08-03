@@ -202,8 +202,32 @@ exports.loginUser = async (req, res) => {
 
 
  exports.makePayment = async(req,res) =>{
-  
-
+   try{
+    const user = await service.findId(req.data);
+    const bloodReq = await BloodBank.findBloodRequest(req.body.requestId);
+    console.log(bloodReq.blood_group+"ajsfkoejoijfwiofjow") 
+    if(user.status == 'active' && user.role == 'user'){
+        if(bloodReq.type == 'request' && bloodReq.status == 'Approved'){
+        const price = BloodBank.findBloodPrice(bloodReq.BloodBankId,bloodReq.blood_group)
+        console.log(price+"90808998")
+        if(price == req.body.price){
+            const info={
+                "transaction_id": "TX4567891234567", 
+                "payment_method": req.body.payment_method,
+                "status": "Completed",
+             }
+             await BloodBank.makePayment(bloodReq.id, info)
+        return response(res,MESSAGE.payment_success.value,info,"200") 
+        }
+   return response(res,MESSAGE.insufficient_balance.value,null,"200") 
+        }
+   return response(res,MESSAGE.under_process.value,null,"200")
+   }
+   return response(res,MESSAGE.permission_denied.value,null,"403",true)
+}
+   catch(e){
+    throw e;
+   }
 
  }
 
