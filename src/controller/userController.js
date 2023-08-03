@@ -204,12 +204,11 @@ exports.loginUser = async (req, res) => {
  exports.makePayment = async(req,res) =>{
    try{
     const user = await service.findId(req.data);
-    const bloodReq = await BloodBank.findBloodRequest(req.body.requestId);
-    console.log(bloodReq.blood_group+"ajsfkoejoijfwiofjow") 
+    const bloodReq = await BloodBank.findBloodRequest(req.body.requestId)
     if(user.status == 'active' && user.role == 'user'){
         if(bloodReq.type == 'request' && bloodReq.status == 'Approved'){
-        const price = BloodBank.findBloodPrice(bloodReq.BloodBankId,bloodReq.blood_group)
-        console.log(price+"90808998")
+        const price = await BloodBank.findBloodPrice(bloodReq.BloodBankId,bloodReq.blood_group)
+        console.log(price.bloo+"90808998")
         if(price == req.body.price){
             const info={
                 "transaction_id": "TX4567891234567", 
