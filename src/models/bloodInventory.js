@@ -12,7 +12,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.bloodBank.hasOne(bloodInventory);
+      models.bloodBank.hasOne(bloodInventory,{
+        onDelete: 'CASCADE',
+      });
       bloodInventory.belongsTo(models.bloodBank)
     }
   }

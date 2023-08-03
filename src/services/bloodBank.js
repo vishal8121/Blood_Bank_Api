@@ -250,3 +250,48 @@ exports.updateInventory = async (id,data) =>{
     throw e;
   }
  } 
+
+ exports.findBloodRequest = async(id)=>{
+  try{
+     const req = await bloodRequest.findOne({
+      where:{
+        id : id
+      }
+     })
+     return req
+  }
+  catch(e){
+    throw e;
+  }
+ }
+
+ exports.makePayment = async(id,data)=>{
+  try{
+    const payment = await pay.update({
+      data
+    },{ 
+      where: {
+          BloodRequestId: id
+      }
+  });
+  return payment
+  }
+  catch(e){
+    throw e;
+  }
+ }
+
+ exports.findBloodPrice = async(id,bloodGroup)=>{
+  try{
+   const check = await bloodPrice.findOne({
+    where:{
+      BloodBankId: id,
+      blood_group: bloodGroup
+    }
+   })
+   return check;
+  }
+  catch(e){
+    throw e;
+  }
+ }
