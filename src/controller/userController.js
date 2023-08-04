@@ -177,7 +177,7 @@ exports.loginUser = async (req, res) => {
         }
         if(user.status == 'active' && user.role == 'user'){
                 const checkBloodGroup = await BloodBank.findBloodGroup(req.body.blood_group)
-                if(checkBloodGroup[req.body.blood_group ]>0){
+                if(checkBloodGroup[req.body.blood_group]>0){
                 const data =  await service.bloodRequest(reqData)
                 if(data){
                     const paymentData ={
@@ -193,7 +193,7 @@ exports.loginUser = async (req, res) => {
             }
             else{
                 return response(res,MESSAGE.permission_denied.value,null,"403",true)
-            }
+            } 
         }
     else{
         return response(res,MESSAGE.not_exist.value,null,"403",true)
@@ -216,7 +216,7 @@ exports.loginUser = async (req, res) => {
              }
           const paymentComplete =  await BloodBank.makePayment(bloodReq.id, info)
           if(paymentComplete){
-            console.log(paymentComplete)
+          
             return response(res,MESSAGE.payment_success.value,info,"200") 
           }
           return response(res,MESSAGE.payment_failed.value,null,"200",true) 

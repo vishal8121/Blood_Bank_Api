@@ -271,8 +271,14 @@ exports.approveBloodRequest = async (req,res)=>{
         if(approved){
             console.log(approved)
             const bloodReq = await service.findBloodRequest(req.body.id)
-            console.log(bloodReq) 
-        }
+            console.log(bloodReq.BloodBankId+"Vishal")
+            const inventory = await service.findBloodInventory(bloodReq.BloodBankId)
+            const decrement = inventory[bloodReq.blood_group] - bloodReq.units
+            console.log(inventory[bloodReq.blood_group] - bloodReq.units)
+            const data = {}
+            data[bloodReq.blood_group] = decrement
+            await service.bloodRequestIncrement(bloodReq.BloodBankId,data)
+        } 
         return response(res,MESSAGE.request_approved.value,approved,"200");
     }
     return response(res,MESSAGE.permission_denied.value, null, "403")
