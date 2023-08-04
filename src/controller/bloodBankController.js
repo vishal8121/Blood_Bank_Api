@@ -269,7 +269,9 @@ exports.approveBloodRequest = async (req,res)=>{
     if(data.role == 'blood_bank' && data.status == 'active'){
         const approved = await service.acceptBloodRequest(req.body.id)
         if(approved){
-            
+            console.log(approved)
+            const bloodReq = await service.findBloodRequest(req.body.id)
+            console.log(bloodReq) 
         }
         return response(res,MESSAGE.request_approved.value,approved,"200");
     }

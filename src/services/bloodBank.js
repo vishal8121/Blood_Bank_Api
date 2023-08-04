@@ -292,6 +292,16 @@ exports.updateInventory = async (id,data) =>{
   }
  }
 
- exports.bloodRequestIncre = async()=>{
-
+ exports.bloodRequestIncrement = async(id,data)=>{
+  try{
+   const incre = await bloodInventory.update(data,{
+    where:{
+       BloodBankId:id
+    }
+   })
+   return incre;
+  }
+  catch(e){
+    throw e;
+  }
  }
