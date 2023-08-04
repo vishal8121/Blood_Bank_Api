@@ -305,3 +305,17 @@ exports.updateInventory = async (id,data) =>{
     throw e;
   }
  }
+
+ exports.findBloodInventory = async(id)=>{
+   try{
+     const inventory = await bloodInventory.findOne({
+      where:{
+        BloodBankId:id
+      }
+     })
+     return inventory;
+   }
+   catch(e){
+    throw e;
+   }
+ }
