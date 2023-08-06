@@ -208,20 +208,33 @@ exports.loginUser = async (req, res) => {
     if(user.status == 'active' && user.role == 'user'){
         if(bloodReq.type == 'request' && bloodReq.status == 'Approved'){
         const price = await BloodBank.findBloodPrice(bloodReq.BloodBankId)
+        const info={
+            "transaction_id": "TX4567891234567", 
+            "payment_method": req.body.payment_method,
+            "status": "failed",
+         }
         if(price[bloodReq.blood_group]*bloodReq.units == req.body.price){
-            const info={
-                "transaction_id": "TX4567891234567", 
-                "payment_method": req.body.payment_method,
-                "status": "Completed",
-             }
+          info.status = "Completed"
           const paymentComplete =  await BloodBank.makePayment(bloodReq.id, info)
           if(paymentComplete){
-          
             return response(res,MESSAGE.payment_success.value,info,"200") 
           }
-          return response(res,MESSAGE.payment_failed.value,null,"200",true) 
+          info.status = "failed"
+          return response(res,MESSAGE.payment_failed.value,info,"200",true) 
         }
-   return response(res,MESSAGE.insufficient_balance.value,null,"200") 
+        else if(price[bloodReq.blood_group]*bloodReq.units < req.body.price){
+         info.status = "pending"
+         await BloodBank.makePayment(bloodReq.id, info)
+         return response(res,MESSAGE.valid_pay.value,info,"200",true) 
+        }
+          const inventory = await BloodBank.findBloodInventory(bloodReq.BloodBankId)
+          const increment = inventory[bloodReq.blood_group] + bloodReq.units
+          const data = {}
+          data[bloodReq.blood_group] = increment
+          await BloodBank.bloodRequestIncrement(bloodReq.BloodBankId,data)
+        //   console.log(bloodReq.units+"7686")
+   await BloodBank.makePayment(bloodReq.id, info)
+   return response(res,MESSAGE.insufficient_balance.value,info,"200") 
         }
    return response(res,MESSAGE.under_process.value,null,"200")
    }
@@ -230,7 +243,6 @@ exports.loginUser = async (req, res) => {
    catch(e){
     throw e;
    }
-
  }
 
 // exports.logoutUser = async(req, res) =>{
