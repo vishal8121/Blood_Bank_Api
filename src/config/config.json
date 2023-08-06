@@ -4,7 +4,7 @@
     "password": null,
     "database": "bloodB",
     "host": "localhost",
-    "dialect": "mysql"
+    "dialect": "mysql" 
   },
   "test": {
     "username": "root",
