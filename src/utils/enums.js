@@ -24,7 +24,9 @@ const messages = new Enum({
      'payment_failed':"Payment Failed", 
      'valid_pay':"Please enter price accordingly your selected blood group",
      "payment_try":"Payment Failed. Try again...",
-     "rejected":"Your request are rejected..Try again"
+     "rejected":"Your request are rejected..Try again",
+     "approved":"Request Approved",
+     "collected":"Your have successfully donated Blood"
     })
 
 
