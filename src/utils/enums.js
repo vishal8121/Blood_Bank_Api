@@ -22,7 +22,9 @@ const messages = new Enum({
      'insufficient_balance':"You have entered insufficient amount blood",
      'payment_success':"Payment Completed",
      'payment_failed':"Payment Failed", 
-     'valid_pay':"Please enter price accordingly your selected blood group"
+     'valid_pay':"Please enter price accordingly your selected blood group",
+     "payment_try":"Payment Failed. Try again...",
+     "rejected":"Your request are rejected..Try again"
     })
 
 

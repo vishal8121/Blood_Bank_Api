@@ -207,6 +207,10 @@ exports.loginUser = async (req, res) => {
     const bloodReq = await BloodBank.findBloodRequest(req.body.requestId)
     if(user.status == 'active' && user.role == 'user'){
         if(bloodReq.type == 'request' && bloodReq.status == 'Approved'){
+        const pay = await BloodBank.findPaymentStatus(req.body.requestId)
+        if(pay.status == "failed"){
+            return response(res,MESSAGE.payment_try.value,null,"403",true)  
+        }
         const price = await BloodBank.findBloodPrice(bloodReq.BloodBankId)
         const info={
             "transaction_id": "TX4567891234567", 
@@ -227,6 +231,11 @@ exports.loginUser = async (req, res) => {
          await BloodBank.makePayment(bloodReq.id, info)
          return response(res,MESSAGE.valid_pay.value,info,"200",true) 
         }
+          const reject = {
+            "status":"Rejected"
+          }
+          const fail = await BloodBank.rejectRequestStatus(bloodReq.id,reject)
+          console.log(fail+"VISH")
           const inventory = await BloodBank.findBloodInventory(bloodReq.BloodBankId)
           const increment = inventory[bloodReq.blood_group] + bloodReq.units
           const data = {}
@@ -235,6 +244,9 @@ exports.loginUser = async (req, res) => {
         //   console.log(bloodReq.units+"7686")
    await BloodBank.makePayment(bloodReq.id, info)
    return response(res,MESSAGE.insufficient_balance.value,info,"200") 
+        }
+        else if(bloodReq.status == "Rejected"){
+   return response(res,MESSAGE.rejected.value,null,"403")
         }
    return response(res,MESSAGE.under_process.value,null,"200")
    }

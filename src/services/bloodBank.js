@@ -319,3 +319,31 @@ exports.updateInventory = async (id,data) =>{
     throw e;
    }
  }
+
+ exports.findPaymentStatus = async(id)=>{
+  try{
+     const status = await pay.findOne({
+      where:{
+        BloodRequestId:id
+      }
+     })
+     return status;
+  }
+  catch(e){
+    throw e;
+  }
+ }
+
+ exports.rejectRequestStatus = async(id,data)=>{
+  try{
+   const status = await bloodRequest.update(data,{
+    where:{
+       id:id
+    }
+   })
+   return status;
+  }
+  catch(e){
+    throw e;
+  }
+ }
