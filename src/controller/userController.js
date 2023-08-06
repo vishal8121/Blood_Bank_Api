@@ -69,7 +69,7 @@ exports.userRegister = async (req, res) => {
         }     
     
     else {
-        return response(res,MESSAGE.not_registered.value,data,null,200,"User email already registered")
+        return response(res,MESSAGE.not_registered.value,null,200,"User email already registered")
     }
 }
 
