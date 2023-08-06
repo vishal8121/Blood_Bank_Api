@@ -200,6 +200,40 @@ exports.loginUser = async (req, res) => {
     }  
  }
 
+ exports.bloodDonationRequest = async(req, res)=>{
+    await sequelize.sync();
+    const tokenId = req.data
+    const bloodBank = await service.findName(req.body.bloodBank)
+    if(bloodBank){
+        const user = await service.findId(tokenId);
+        const reqData = {
+            type: 'donation',
+            units: "1",
+            blood_group: user.blood_group,
+            status: "pending",
+            created_by: user.name,
+            UserId : user.id,
+            BloodBankId: bloodBank.id
+        }
+        if(user.status == 'active' && user.role == 'user'){
+                const checkBloodGroup = await BloodBank.findBloodGroup(user.blood_group)
+                if(checkBloodGroup[user.blood_group]>0){
+                const data =  await service.bloodRequest(reqData)
+                if(data){
+                  return response(res,MESSAGE.under_process.value,reqData,"201")
+                }
+                }
+                return response(res,MESSAGE.blood_not_available.value,null,"200",true)
+            }
+            else{
+                return response(res,MESSAGE.permission_denied.value,null,"403",true)
+            } 
+        }
+    else{
+        return response(res,MESSAGE.not_exist.value,null,"403",true)
+    }  
+ }
+
 
  exports.makePayment = async(req,res) =>{
    try{

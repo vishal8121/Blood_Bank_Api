@@ -251,6 +251,24 @@ exports.updateInventory = async (id,data) =>{
   }
  } 
 
+  exports.collectBlood = async(id)=>{
+  try{
+    const request = await bloodRequest.update({
+      status : "Collected"
+     },
+     {
+      where : {
+       id : id
+      }
+     }
+     )
+     return request
+  }
+  catch(e){
+    throw e;
+  }
+ } 
+
  exports.findBloodRequest = async(id)=>{
   try{
      const req = await bloodRequest.findOne({

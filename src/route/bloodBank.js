@@ -11,3 +11,5 @@ exports.bloodBankUpdateInventoryRoute = bloodBankController.updateBloodBankInven
 exports.checkPendingBloodRequestRoute = bloodBankController.getPendingBloodRequest
 
 exports.approveBloodRequestRoute = bloodBankController.approveBloodRequest
+
+exports.approveDonationRequestRoute = bloodBankController.collectBlood

@@ -271,7 +271,7 @@ exports.approveBloodRequest = async (req,res)=>{
         if(approved){
             // console.log(approved)  
             const bloodReq = await service.findBloodRequest(req.body.id)
-            console.log(bloodReq.BloodBankId+"Vishal")
+            // console.log(bloodReq.BloodBankId+"Vishal")
             const inventory = await service.findBloodInventory(bloodReq.BloodBankId)
             const decrement = inventory[bloodReq.blood_group] - bloodReq.units
             console.log(inventory[bloodReq.blood_group] - bloodReq.units)
@@ -282,4 +282,30 @@ exports.approveBloodRequest = async (req,res)=>{
         return response(res,MESSAGE.request_approved.value,approved,"200");
     }
     return response(res,MESSAGE.permission_denied.value, null, "403")
+}
+
+exports.collectBlood = async(req,res)=>{
+    try{
+        const bloodReq = await service.findBloodRequest(req.body.id)
+        if(bloodReq.status == "Collected"){
+            return response(res,MESSAGE.collected.value,bloodReq,"200");
+        }
+        const data = await service.findId(req.data);
+        if(data.role == 'blood_bank' && data.status == 'active'){
+        const bloodCollected = await service.collectBlood(req.body.id)
+        if(bloodCollected){
+            const bloodReq = await service.findBloodRequest(req.body.id)
+            const inventory = await service.findBloodInventory(bloodReq.BloodBankId)
+            const increment = inventory[bloodReq.blood_group] + bloodReq.units
+            const data = {}
+            data[bloodReq.blood_group] = increment
+            await service.bloodRequestIncrement(bloodReq.BloodBankId,data)
+            return response(res,MESSAGE.approved.value,bloodCollected,"200");
+        }
+        }
+        return response(res,MESSAGE.permission_denied.value, null, "403")
+    }
+    catch(e){
+        throw e;
+    }
 }

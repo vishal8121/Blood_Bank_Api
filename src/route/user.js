@@ -10,7 +10,9 @@ exports.deleteUserRoute = userController.deleteUser;
 
 exports.loginUserRoute = userController.loginUser;
 
-exports.bloodRequestRoute = userController.bloodRequest
+exports.bloodRequestRoute = userController.bloodRequest;
+
+exports.bloodDonationRoute = userController.bloodDonationRequest;
 
 exports.makePaymentRoute = userController.makePayment
 

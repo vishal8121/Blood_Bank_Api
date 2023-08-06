@@ -20,6 +20,8 @@ router.patch('/login',userMiddleware.userLoginAuth, userRoute.loginUserRoute)
 
 router.post('/user/bloodRequest',userMiddleware.verifyToken, userRoute.bloodRequestRoute)
 
+router.post('/user/bloodDonationRequest',userMiddleware.verifyToken, userRoute.bloodDonationRoute)
+
 router.put('/user/bloodRequest/processPayment',userMiddleware.verifyToken, userRoute.makePaymentRoute)
 // super user routes
 
@@ -43,6 +45,11 @@ router.put('/bloodBank/updateInventory',userMiddleware.verifyToken, bloodBankRou
 router.get('/bloodBank/bloodRequest',userMiddleware.verifyToken, bloodBankRoute.checkPendingBloodRequestRoute)
 
 router.patch('/bloodBank/processRequest',userMiddleware.verifyToken, bloodBankRoute.approveBloodRequestRoute)
+
+router.patch('/bloodBank/processRequest/donation',userMiddleware.verifyToken, bloodBankRoute.approveDonationRequestRoute)
+
+
+
 
 module.exports = router
 
