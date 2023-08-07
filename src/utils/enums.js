@@ -27,7 +27,9 @@ const messages = new Enum({
      "rejected":"Your request are rejected..Try again",
      "approved":"Request Approved",
      "collected":"Your have successfully donated Blood",
-     "not_collected":"Blood not collected"
+     "not_collected":"Blood not collected",
+     "failed_to_authenticate":"Failed to authenticate token",
+     "not_authenticated":"Not authenticated",
     })
 
 

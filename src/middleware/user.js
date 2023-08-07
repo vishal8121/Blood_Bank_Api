@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 // const responseObj = require('../utils/user')
 const getAllUtils = require('../utils/user')
 const response = getAllUtils.sendResponse
+const MESSAGE = require('../utils/enums')
+const STATUS_CODE = require('../utils/statusCode')
 
 
 /********************************************************************
@@ -23,11 +25,11 @@ exports.verifyToken = (req, res, next) => {
             console.log(req.data);
             next();
         } catch (error) {
-            return response(res, "Failed to authenticate token", null, 500, true);
+            return response(res,MESSAGE.failed_to_authenticate.value, null, STATUS_CODE.Internal_Server_Error.value, true);
         }
     } else {
         console.log(token); 
-        return response(res, "User not authenticated", null, 401, true);
+        return response(res,MESSAGE.not_authenticated.value, null, STATUS_CODE.Unauthorized.value, true);
     }
 };
 
@@ -53,7 +55,7 @@ exports.data =(req,res,next)=>{
     user = req.body
     responseObj = userMiddleware.User(user);
     if(responseObj.error){
-        return response(res,"User not created",null,"400",responseObj.error.details[0].message);
+        return response(res,MESSAGE.not_created.value,null,STATUS_CODE.EXCEPTION_ERROR.value,responseObj.error.details[0].message);
     }
     else{
         next()
@@ -76,7 +78,7 @@ if error any error return then response error status message with mentioned erro
     user = req.body
     responseResult = userMiddleware.updatedUser(user);
     if(responseResult.error){
-        return res.status(400).send(responseObj.error(responseResult.error.details[0].message,400));
+        return res.status(400).send(responseObj.error(responseResult.error.details[0].message,STATUS_CODE.EXCEPTION_ERROR.value));
     }
     else{
        next()
