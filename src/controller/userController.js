@@ -3,6 +3,7 @@ const BloodBank = require("../services/bloodBank");
 const bcrypt = require('bcrypt');
 const getAllUtils = require('../utils/user')
 const MESSAGE = require('../utils/enums');
+const STATUS_CODE = require('../utils/statusCode');
 const response = getAllUtils.sendResponse
 const db = require('../models/index');
 const sequelize = db.sequelize
@@ -46,9 +47,9 @@ exports.userRegister = async (req, res) => {
                         created_by: dataId.name
                     }
                     const data = await service.addUser(userData);
-                    return response(res,MESSAGE.registered.value,data,"201")
+                    return response(res,MESSAGE.registered.value,data,STATUS_CODE.CREATED.value)
                 }
-                return response(res,MESSAGE.permission_denied.value,null,"200",true);
+                return response(res,MESSAGE.permission_denied.value,null,STATUS_CODE.FORBIDDEN.value,true);
             }
                 encryptedPassword = await bcrypt.hash(req.body.password, 10);
                 const userData = {
@@ -66,15 +67,15 @@ exports.userRegister = async (req, res) => {
                 created_by: req.body.name
             }
             const data = await service.addUser(userData);
-            return response(res,MESSAGE.registered.value,data,"201")
+            return response(res,MESSAGE.registered.value,data,STATUS_CODE.CREATED.value)
             }     
         
         else {
-            return response(res,MESSAGE.not_registered.value,null,200,"User email already registered")
+            return response(res,MESSAGE.not_registered.value,null,STATUS_CODE.SUCCESS.value,"User email already registered")
         }
     }
     catch(e){
-        return response(res, "Internal Server Error" + e, null, "500", true);
+        return response(res, "Internal Server Error" + e, null,STATUS_CODE.Internal_Server_Error.value, true);
     }
 }
 
@@ -89,12 +90,12 @@ exports.getUsers = (async (req, res) => {
     try{
         const users = await service.getUser()
         if (users.length == 0) {
-            return response(res,MESSAGE.data_not_found.value,data,null,"200");
+            return response(res,MESSAGE.data_not_found.value,data,null,STATUS_CODE.SUCCESS.value);
         }
-        return response(res,MESSAGE.all_data.value,data,users,"200");
+        return response(res,MESSAGE.all_data.value,data,users,STATUS_CODE.SUCCESS.value);
     }
     catch(e){
-        return response(res, "Internal Server Error" + e, null, "500", true);
+        return response(res, "Internal Server Error" + e, null,STATUS_CODE.Internal_Server_Error.value, true);
     }
    
 });
@@ -118,10 +119,10 @@ exports.updateUser = async (req, res) => {
         const data = req.body;
         data.updated_by = dataId.name;
         await service.updateUser(dataId.id, data);
-        return response(res,MESSAGE.update_success.value,data,"200");
+        return response(res,MESSAGE.update_success.value,data,STATUS_CODE.SUCCESS.value);
     }
     catch(e){
-        return response(res, "Internal Server Error" + e, null, "500", true);
+        return response(res, "Internal Server Error" + e, null, STATUS_CODE.Internal_Server_Error.value, true);
     }
    
 }
@@ -140,10 +141,10 @@ exports.deleteUser = async (req, res) => {
     try{
         id = req.data;
         await service.deleteUser(id);
-        return response(res,MESSAGE.account_deleted.value,null,"200");
+        return response(res,MESSAGE.account_deleted.value,null,STATUS_CODE.SUCCESS.value);
     }
     catch(e){
-        return response(res, "Internal Server Error" + e, null, "500", true);
+        return response(res, "Internal Server Error" + e, null,STATUS_CODE.Internal_Server_Error.value, true);
     }
 }
 
@@ -166,17 +167,17 @@ exports.loginUser = async (req, res) => {
         if (user != null) { 
             if (await bcrypt.compare(password, user.password)) {
                 // Passwords match
-                return response(res,MESSAGE.login_success.value,user,"200");
+                return response(res,MESSAGE.login_success.value,user,STATUS_CODE.SUCCESS.value);
             } else {
                 // Passwords do not match
-               return response(res,MESSAGE.password_incorrect.value,null,"403",true);
+               return response(res,MESSAGE.password_incorrect.value,null,STATUS_CODE.FORBIDDEN.value,true);
             }
         }
         // User not found
-        return response(res,MESSAGE.not_registered.value,null,"403",true);
+        return response(res,MESSAGE.not_registered.value,null,STATUS_CODE.FORBIDDEN.value,true);
     } catch (e) {
         console.log("Error" + e);
-        return response(res,"Internal Server Error"+e,null,"500",true);
+        return response(res,"Internal Server Error"+e,null,STATUS_CODE.Internal_Server_Error.value,true);
     }
 };
 
@@ -209,21 +210,21 @@ exports.loginUser = async (req, res) => {
                             created_by: bloodBank.name
                         }
                         const createPayment = await BloodBank.createPayment(paymentData)
-                      return response(res,MESSAGE.under_process.value,reqData,"201")
+                      return response(res,MESSAGE.under_process.value,reqData,STATUS_CODE.CREATED.value)
                     }
                     }
-                    return response(res,MESSAGE.blood_not_available.value,null,"200",true)
+                    return response(res,MESSAGE.blood_not_available.value,null,STATUS_CODE.SUCCESS.value,true)
                 }
                 else{
-                    return response(res,MESSAGE.permission_denied.value,null,"403",true)
+                    return response(res,MESSAGE.permission_denied.value,null,STATUS_CODE.FORBIDDEN.value,true)
                 } 
             }
         else{
-            return response(res,MESSAGE.not_exist.value,null,"403",true)
+            return response(res,MESSAGE.not_exist.value,null,STATUS_CODE.FORBIDDEN.value,true)
         }  
     }
     catch(e){
-        return response(res,"Internal Server Error"+e,null,"500",true);
+        return response(res,"Internal Server Error"+e,null,STATUS_CODE.Internal_Server_Error.value,true);
     }
     
  }
@@ -249,21 +250,21 @@ exports.loginUser = async (req, res) => {
                     if(checkBloodGroup[user.blood_group]>0){
                     const data =  await service.bloodRequest(reqData)
                     if(data){
-                      return response(res,MESSAGE.under_process.value,reqData,"201")
+                      return response(res,MESSAGE.under_process.value,reqData,STATUS_CODE.CREATED.value)
                     }
                     }
-                    return response(res,MESSAGE.blood_not_available.value,null,"200",true)
+                    return response(res,MESSAGE.blood_not_available.value,null,STATUS_CODE.SUCCESS.value,true)
                 }
                 else{
-                    return response(res,MESSAGE.permission_denied.value,null,"403",true)
+                    return response(res,MESSAGE.permission_denied.value,null,STATUS_CODE.Unauthorized.value,true)
                 } 
             }
         else{
-            return response(res,MESSAGE.not_exist.value,null,"403",true)
+            return response(res,MESSAGE.not_exist.value,null,STATUS_CODE.FORBIDDEN.value,true)
         }  
     }
     catch(e){
-        return response(res,"Internal Server Error"+e,null,"500",true);
+        return response(res,"Internal Server Error"+e,null,STATUS_CODE.Internal_Server_Error.value,true);
     }
    
  }
@@ -311,17 +312,17 @@ exports.loginUser = async (req, res) => {
           await BloodBank.bloodRequestIncrement(bloodReq.BloodBankId,data)
         //   console.log(bloodReq.units+"7686")
    await BloodBank.makePayment(bloodReq.id, info)
-   return response(res,MESSAGE.insufficient_balance.value,info,"200") 
+   return response(res,MESSAGE.insufficient_balance.value,info,STATUS_CODE.SUCCESS.value) 
         }
         else if(bloodReq.status == "Rejected"){
-   return response(res,MESSAGE.rejected.value,null,"403")
+   return response(res,MESSAGE.rejected.value,null,STATUS_CODE.FORBIDDEN.value)
         }
-   return response(res,MESSAGE.under_process.value,null,"200")
+   return response(res,MESSAGE.under_process.value,null,STATUS_CODE.SUCCESS.value)
    }
-   return response(res,MESSAGE.permission_denied.value,null,"403",true)
+   return response(res,MESSAGE.permission_denied.value,null,STATUS_CODE.Unauthorized.value,true)
 }
    catch(e){
-    return response(res,"Internal Server Error"+e,null,"500",true);
+    return response(res,"Internal Server Error"+e,null,STATUS_CODE.Internal_Server_Error.value,true);
    }
  }
 
