@@ -23,53 +23,58 @@ const sequelize = db.sequelize
  *****************************************************************************/
 
 exports.userRegister = async (req, res) => {
-    await sequelize.sync();
-    const user = await service.checkEmail(req.body.email);
-    if (user == null) {
-        if(req.body.role == 'super_user'){ 
-            const tokenId = req.data; 
-            const dataId = await service.findId(tokenId);
-            if(dataId.role == 'super_user'){
+    try{
+        await sequelize.sync();
+        const user = await service.checkEmail(req.body.email);
+        if (user == null) {
+            if(req.body.role == 'super_user'){ 
+                const tokenId = req.data; 
+                const dataId = await service.findId(tokenId);
+                if(dataId.role == 'super_user'){
+                    encryptedPassword = await bcrypt.hash(req.body.password, 10);
+                    const userData = {
+                        name: req.body.name,
+                        email: req.body.email,
+                        age: req.body.age,
+                        gender: req.body.gender,
+                        password: encryptedPassword,
+                        role: req.body.role,
+                        phone_number: req.body.phone_number,
+                        address: req.body.address,
+                        account_status: "activated",
+                        status: "inactive",
+                        created_by: dataId.name
+                    }
+                    const data = await service.addUser(userData);
+                    return response(res,MESSAGE.registered.value,data,"201")
+                }
+                return response(res,MESSAGE.permission_denied.value,null,"200",true);
+            }
                 encryptedPassword = await bcrypt.hash(req.body.password, 10);
                 const userData = {
-                    name: req.body.name,
-                    email: req.body.email,
-                    age: req.body.age,
-                    gender: req.body.gender,
-                    password: encryptedPassword,
-                    role: req.body.role,
-                    phone_number: req.body.phone_number,
-                    address: req.body.address,
-                    account_status: "activated",
-                    status: "inactive",
-                    created_by: dataId.name
-                }
-                const data = await service.addUser(userData);
-                return response(res,MESSAGE.registered.value,data,"201")
+                name: req.body.name,
+                email: req.body.email,
+                age: req.body.age,
+                gender: req.body.gender,
+                blood_group: req.body.blood_group,
+                password: encryptedPassword,
+                role: req.body.role,
+                phone_number: req.body.phone_number,
+                address: req.body.address,
+                last_donation_date: req.body.last_donation_date,
+                status: "inactive",
+                created_by: req.body.name
             }
-            return response(res,MESSAGE.permission_denied.value,null,"200",true);
+            const data = await service.addUser(userData);
+            return response(res,MESSAGE.registered.value,data,"201")
+            }     
+        
+        else {
+            return response(res,MESSAGE.not_registered.value,null,200,"User email already registered")
         }
-            encryptedPassword = await bcrypt.hash(req.body.password, 10);
-            const userData = {
-            name: req.body.name,
-            email: req.body.email,
-            age: req.body.age,
-            gender: req.body.gender,
-            blood_group: req.body.blood_group,
-            password: encryptedPassword,
-            role: req.body.role,
-            phone_number: req.body.phone_number,
-            address: req.body.address,
-            last_donation_date: req.body.last_donation_date,
-            status: "inactive",
-            created_by: req.body.name
-        }
-        const data = await service.addUser(userData);
-        return response(res,MESSAGE.registered.value,data,"201")
-        }     
-    
-    else {
-        return response(res,MESSAGE.not_registered.value,null,200,"User email already registered")
+    }
+    catch(e){
+        return response(res, "Internal Server Error" + e, null, "500", true);
     }
 }
 
@@ -81,11 +86,17 @@ exports.userRegister = async (req, res) => {
 ******************************************************************************/
 
 exports.getUsers = (async (req, res) => {
-    const users = await service.getUser()
-    if (users.length == 0) {
-        return response(res,MESSAGE.data_not_found.value,data,null,"200");
+    try{
+        const users = await service.getUser()
+        if (users.length == 0) {
+            return response(res,MESSAGE.data_not_found.value,data,null,"200");
+        }
+        return response(res,MESSAGE.all_data.value,data,users,"200");
     }
-    return response(res,MESSAGE.all_data.value,data,users,"200");
+    catch(e){
+        return response(res, "Internal Server Error" + e, null, "500", true);
+    }
+   
 });
 
 
@@ -99,14 +110,20 @@ exports.getUsers = (async (req, res) => {
 ************************************************************************/
 
 exports.updateUser = async (req, res) => {
-    const tokenId = req.data; 
-    console.log(tokenId)
-    // const id = req.params.id;
-    const dataId = await service.findId(tokenId);
-    const data = req.body;
-    data.updated_by = dataId.name;
-    await service.updateUser(dataId.id, data);
-    return response(res,MESSAGE.update_success.value,data,"200");
+    try{
+        const tokenId = req.data; 
+        console.log(tokenId)
+        // const id = req.params.id;
+        const dataId = await service.findId(tokenId);
+        const data = req.body;
+        data.updated_by = dataId.name;
+        await service.updateUser(dataId.id, data);
+        return response(res,MESSAGE.update_success.value,data,"200");
+    }
+    catch(e){
+        return response(res, "Internal Server Error" + e, null, "500", true);
+    }
+   
 }
 
 
@@ -120,9 +137,14 @@ exports.updateUser = async (req, res) => {
 *****************************************************************************/
 
 exports.deleteUser = async (req, res) => {
-    id = req.data;
-    await service.deleteUser(id);
-    return response(res,MESSAGE.account_deleted.value,null,"200");
+    try{
+        id = req.data;
+        await service.deleteUser(id);
+        return response(res,MESSAGE.account_deleted.value,null,"200");
+    }
+    catch(e){
+        return response(res, "Internal Server Error" + e, null, "500", true);
+    }
 }
 
 
@@ -161,77 +183,89 @@ exports.loginUser = async (req, res) => {
  
 
  exports.bloodRequest = async(req, res)=>{
-    await sequelize.sync();
-    const tokenId = req.data
-    const bloodBank = await service.findName(req.body.bloodBank)
-    if(bloodBank){
-        const user = await service.findId(tokenId);
-        const reqData = {
-            type: 'request',
-            units: req.body.units,
-            blood_group: req.body.blood_group,
-            status: "pending",
-            created_by: user.name,
-            UserId : user.id,
-            BloodBankId: bloodBank.id
-        }
-        if(user.status == 'active' && user.role == 'user'){
-                const checkBloodGroup = await BloodBank.findBloodGroup(req.body.blood_group)
-                if(checkBloodGroup[req.body.blood_group]>0){
-                const data =  await service.bloodRequest(reqData)
-                if(data){
-                    const paymentData ={
-                        status: "pending",
-                        BloodRequestId: data.id,
-                        created_by: bloodBank.name
-                    }
-                    const createPayment = await BloodBank.createPayment(paymentData)
-                  return response(res,MESSAGE.under_process.value,reqData,"201")
-                }
-                }
-                return response(res,MESSAGE.blood_not_available.value,null,"200",true)
+    try{
+        await sequelize.sync();
+        const tokenId = req.data
+        const bloodBank = await service.findName(req.body.bloodBank)
+        if(bloodBank){
+            const user = await service.findId(tokenId);
+            const reqData = {
+                type: 'request',
+                units: req.body.units,
+                blood_group: req.body.blood_group,
+                status: "pending",
+                created_by: user.name,
+                UserId : user.id,
+                BloodBankId: bloodBank.id
             }
-            else{
-                return response(res,MESSAGE.permission_denied.value,null,"403",true)
-            } 
-        }
-    else{
-        return response(res,MESSAGE.not_exist.value,null,"403",true)
-    }  
+            if(user.status == 'active' && user.role == 'user'){
+                    const checkBloodGroup = await BloodBank.findBloodGroup(req.body.blood_group)
+                    if(checkBloodGroup[req.body.blood_group]>0){
+                    const data =  await service.bloodRequest(reqData)
+                    if(data){
+                        const paymentData ={
+                            status: "pending",
+                            BloodRequestId: data.id,
+                            created_by: bloodBank.name
+                        }
+                        const createPayment = await BloodBank.createPayment(paymentData)
+                      return response(res,MESSAGE.under_process.value,reqData,"201")
+                    }
+                    }
+                    return response(res,MESSAGE.blood_not_available.value,null,"200",true)
+                }
+                else{
+                    return response(res,MESSAGE.permission_denied.value,null,"403",true)
+                } 
+            }
+        else{
+            return response(res,MESSAGE.not_exist.value,null,"403",true)
+        }  
+    }
+    catch(e){
+        return response(res,"Internal Server Error"+e,null,"500",true);
+    }
+    
  }
 
  exports.bloodDonationRequest = async(req, res)=>{
-    await sequelize.sync();
-    const tokenId = req.data
-    const bloodBank = await service.findName(req.body.bloodBank)
-    if(bloodBank){
-        const user = await service.findId(tokenId);
-        const reqData = {
-            type: 'donation',
-            units: "1",
-            blood_group: user.blood_group,
-            status: "pending",
-            created_by: user.name,
-            UserId : user.id,
-            BloodBankId: bloodBank.id
-        }
-        if(user.status == 'active' && user.role == 'user'){
-                const checkBloodGroup = await BloodBank.findBloodGroup(user.blood_group)
-                if(checkBloodGroup[user.blood_group]>0){
-                const data =  await service.bloodRequest(reqData)
-                if(data){
-                  return response(res,MESSAGE.under_process.value,reqData,"201")
-                }
-                }
-                return response(res,MESSAGE.blood_not_available.value,null,"200",true)
+    try{
+        await sequelize.sync();
+        const tokenId = req.data
+        const bloodBank = await service.findName(req.body.bloodBank)
+        if(bloodBank){
+            const user = await service.findId(tokenId);
+            const reqData = {
+                type: 'donation',
+                units: "1",
+                blood_group: user.blood_group,
+                status: "pending",
+                created_by: user.name,
+                UserId : user.id,
+                BloodBankId: bloodBank.id
             }
-            else{
-                return response(res,MESSAGE.permission_denied.value,null,"403",true)
-            } 
-        }
-    else{
-        return response(res,MESSAGE.not_exist.value,null,"403",true)
-    }  
+            if(user.status == 'active' && user.role == 'user'){
+                    const checkBloodGroup = await BloodBank.findBloodGroup(user.blood_group)
+                    if(checkBloodGroup[user.blood_group]>0){
+                    const data =  await service.bloodRequest(reqData)
+                    if(data){
+                      return response(res,MESSAGE.under_process.value,reqData,"201")
+                    }
+                    }
+                    return response(res,MESSAGE.blood_not_available.value,null,"200",true)
+                }
+                else{
+                    return response(res,MESSAGE.permission_denied.value,null,"403",true)
+                } 
+            }
+        else{
+            return response(res,MESSAGE.not_exist.value,null,"403",true)
+        }  
+    }
+    catch(e){
+        return response(res,"Internal Server Error"+e,null,"500",true);
+    }
+   
  }
 
 
@@ -287,7 +321,7 @@ exports.loginUser = async (req, res) => {
    return response(res,MESSAGE.permission_denied.value,null,"403",true)
 }
    catch(e){
-    throw e;
+    return response(res,"Internal Server Error"+e,null,"500",true);
    }
  }
 
