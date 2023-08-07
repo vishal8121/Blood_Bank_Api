@@ -319,10 +319,13 @@ exports.collectBlood = async(req,res)=>{
         if(bloodReq.status == "Collected"){
             return response(res,MESSAGE.collected.value,bloodReq,"200");
         }
+        else if(bloodReq.status == "Not_Collected"){
+            return response(res,MESSAGE.not_collected.value,bloodReq.status,"200");
+        }
         const data = await service.findId(req.data);
         if(data.role == 'blood_bank' && data.status == 'active'){
-        const bloodCollected = await service.collectBlood(req.body.id)
-        if(bloodCollected){
+        const bloodCollected = await service.collectBlood(req.body.id,req.body.collectionStatus)
+        if(bloodCollected && req.body.collectionStatus == "request"){
             const bloodReq = await service.findBloodRequest(req.body.id)
             const inventory = await service.findBloodInventory(bloodReq.BloodBankId)
             const increment = inventory[bloodReq.blood_group] + bloodReq.units
@@ -331,6 +334,7 @@ exports.collectBlood = async(req,res)=>{
             await service.bloodRequestIncrement(bloodReq.BloodBankId,data)
             return response(res,MESSAGE.approved.value,bloodCollected,"200");
         }
+        return response(res,MESSAGE.not_collected.value,null,"403");
         }
         return response(res,MESSAGE.permission_denied.value, null, "403")
     }

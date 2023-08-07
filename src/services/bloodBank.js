@@ -251,10 +251,10 @@ exports.updateInventory = async (id,data) =>{
   }
  } 
 
-  exports.collectBlood = async(id)=>{
+  exports.collectBlood = async(id,collected)=>{
   try{
     const request = await bloodRequest.update({
-      status : "Collected"
+      status : collected
      },
      {
       where : {
